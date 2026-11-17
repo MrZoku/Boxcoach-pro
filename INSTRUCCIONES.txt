@@ -1,0 +1,23 @@
+BOXCOACH PRO — PAQUETE PWA (APP MÓVIL INSTALABLE)
+================================================
+
+Archivos incluidos:
+1. index.html      -> Aplicación completa con Screen Wake Lock API, reloj Date.now(), cronómetro de asaltos, campamento doble turno (pesas + boxeo), vías energéticas y catálogo.
+2. manifest.json   -> Configuración nativa para pantalla completa, orientación vertical e ícono en pantalla de inicio.
+3. sw.js           -> Service Worker para funcionamiento 100 % OFFLINE dentro del gimnasio sin internet.
+4. icon-192.svg    -> Ícono vectorial de la aplicación (192x192).
+5. icon-512.svg    -> Ícono vectorial de alta resolución (512x512).
+
+CÓMO INSTALAR EN TU CELULAR EN 2 MINUTOS:
+-----------------------------------------
+Paso 1: Sube esta carpeta (o directamente el archivo BoxCoachPro-PWA.zip) a un hosting gratuito con HTTPS:
+  - Opción más rápida: entra a https://app.netlify.com/drop y arrastra el archivo ZIP o la carpeta. Te dará un enlace HTTPS al instante.
+  - Alternativas gratuitas: Vercel (vercel.com) o GitHub Pages.
+
+Paso 2: Abre ese enlace en tu teléfono:
+  - En Android (Chrome / Edge): Pulsa el botón "Instalar" dentro de la app o menú (⋮) -> "Instalar aplicación".
+  - En iPhone (Safari): Pulsa el botón Compartir (cuadro con flecha hacia arriba) -> "Agregar a inicio".
+
+Mejoras técnicas incluidas:
+- Screen Wake Lock API: Mantiene la pantalla encendida automáticamente mientras el cronómetro corre para que no se suspenda la campana en medio del round.
+- Reloj de alta precisión (Date.now()): Calcula el tiempo real transcurrido mediante marcas de tiempo del sistema, evitando atrasos si cambias brevemente de aplicación.
