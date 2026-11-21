@@ -1,13 +1,14 @@
 {
   "name": "BoxCoach Pro — Entrenamiento y Campamento de Boxeo",
   "short_name": "BoxCoach Pro",
-  "description": "Cronómetro de asaltos de alta precisión, campamento de doble turno (pesas + boxeo), vías energéticas y catálogo técnico.",
+  "description": "Cronómetro profesional de asaltos, campamento unificado de doble turno (AM Pesas por grupos musculares + PM Boxeo), vías energéticas Merlo (2014) y catálogo técnico.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#090d16",
-  "theme_color": "#090d16",
+  "theme_color": "#ef4444",
+  "lang": "es",
   "categories": [
     "sports",
     "fitness",
@@ -15,16 +16,28 @@
   ],
   "icons": [
     {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
       "src": "./icon-192.svg",
       "sizes": "192x192",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "./icon-512.svg",
       "sizes": "512x512",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
