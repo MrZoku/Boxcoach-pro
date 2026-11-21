@@ -3,1692 +3,2555 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#ef4444" />
+  <meta name="theme-color" content="#090d16" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="BoxCoach Pro" />
-  <title>BoxCoach Pro — Campamento &amp; Cronómetro de Boxeo</title>
+  <title>BoxCoach Pro — Entrenamiento &amp; Periodización de Boxeo</title>
   <link rel="manifest" href="./manifest.json" />
-  <link rel="apple-touch-icon" href="./icon-192.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
-  <link rel="icon" type="image/svg+xml" href="./icon-192.svg" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
   <style>
     :root {
       --bg: #090d16;
-      --bg-card: #111827;
-      --bg-elevated: #1e293b;
-      --border: #283548;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --accent: #ef4444;
-      --accent-dark: #dc2626;
-      --amber: #f59e0b;
+      --surface: #111827;
+      --surface-2: #1a2336;
+      --border: #263248;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --crimson: #ef4444;
+      --crimson-dark: #b91c1c;
+      --gold: #f59e0b;
       --emerald: #10b981;
-      --sky: #38bdf8;
-      --purple: #a855f7;
+      --blue: #3b82f6;
+      --purple: #8b5cf6;
       --radius: 14px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding-bottom: 86px;
-      line-height: 1.45;
-    }
-    .container { max-width: 680px; margin: 0 auto; padding: 12px 14px; }
 
-    /* Top Bar */
-    .topbar {
-      position: sticky; top: 0; z-index: 40;
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    button, input, select {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      touch-action: manipulation;
+      user-select: none;
+      border: none;
+      transition: transform 0.08s ease, background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    /* Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
       background: rgba(9, 13, 22, 0.94);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
       padding: 10px 14px;
     }
-    .topbar-inner {
-      max-width: 680px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      max-width: 760px;
+      margin: 0 auto;
     }
-    .brand { display: flex; align-items: center; gap: 8px; }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
     .brand-icon {
-      width: 34px; height: 34px; border-radius: 10px;
-      background: linear-gradient(135deg, #ef4444, #b91c1c);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; font-weight: 800; box-shadow: 0 4px 12px rgba(239,68,68,0.35);
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--crimson), #991b1b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 2px 10px rgba(239, 68, 68, 0.35);
     }
-    .brand-title { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.02em; }
-    .brand-sub { font-size: 0.7rem; color: var(--text-muted); display: block; }
-    .top-actions { display: flex; align-items: center; gap: 6px; }
-    .status-pill {
-      font-size: 0.68rem; font-weight: 700; padding: 4px 8px;
-      border-radius: 999px; border: 1px solid rgba(16, 185, 129, 0.4);
-      background: rgba(16, 185, 129, 0.14); color: #34d399;
-      display: inline-flex; align-items: center; gap: 5px;
+
+    .brand-title {
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
     }
-    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #10b981; }
-    .btn-profile-toggle {
-      background: var(--bg-elevated); color: var(--text);
-      border: 1px solid var(--border); border-radius: 10px;
-      padding: 6px 10px; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+
+    .brand-sub {
+      font-size: 0.72rem;
+      color: var(--gold);
+      font-weight: 600;
     }
-    .btn-profile-toggle.active { border-color: var(--accent); background: rgba(239,68,68,0.16); }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill-btn {
+      min-height: 36px;
+      padding: 6px 10px;
+      border-radius: 10px;
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pill-btn.active {
+      background: rgba(239, 68, 68, 0.18);
+      border-color: var(--crimson);
+      color: #fca5a5;
+    }
+
+    .pill-btn.install-btn {
+      background: rgba(245, 158, 11, 0.16);
+      border-color: var(--gold);
+      color: #fcd34d;
+    }
+
+    .status-strip {
+      max-width: 760px;
+      margin: 6px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .status-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.7rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .badge.online { color: #34d399; border-color: rgba(16, 185, 129, 0.35); }
+    .badge.offline { color: #fbbf24; border-color: rgba(245, 158, 11, 0.45); }
+    .badge.wakelock { color: #fde68a; border-color: rgba(245, 158, 11, 0.5); background: rgba(245, 158, 11, 0.12); }
+
+    /* Error Banner */
+    #errorBanner {
+      display: none;
+      background: #7f1d1d;
+      color: #fecaca;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      border-bottom: 1px solid #ef4444;
+    }
+
+    /* Main container */
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 12px 14px 92px;
+    }
 
     /* Profile Drawer */
     .profile-drawer {
-      display: none; background: var(--bg-card); border-bottom: 1px solid var(--border);
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
     }
-    .profile-drawer.open { display: block; }
-    .profile-inner { max-width: 680px; margin: 0 auto; }
-    .section-label {
-      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
-      color: var(--text-muted); font-weight: 700; margin-bottom: 8px;
+
+    .profile-drawer.open {
+      display: block;
     }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    @media (max-width: 440px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
-    .field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
-    .field label { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; }
+
+    .section-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin: 0 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    @media (max-width: 480px) {
+      .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
     .field input, .field select {
-      background: var(--bg); color: var(--text); border: 1px solid var(--border);
-      border-radius: 9px; padding: 8px 10px; font-size: 0.85rem; width: 100%;
+      width: 100%;
+      min-height: 40px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.86rem;
     }
-    .field input:focus, .field select:focus { outline: none; border-color: var(--accent); }
 
-    /* Cards & Badges */
-    .card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 14px; margin-bottom: 12px;
+    .field input:focus, .field select:focus {
+      outline: none;
+      border-color: var(--crimson);
     }
-    .card-header {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 8px; margin-bottom: 10px; flex-wrap: wrap;
-    }
-    .card-title { font-size: 0.96rem; font-weight: 800; }
-    .badge {
-      font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 999px;
-      display: inline-flex; align-items: center; gap: 4px;
-    }
-    .badge-red { background: rgba(239,68,68,0.16); color: #fca5a5; border: 1px solid rgba(239,68,68,0.35); }
-    .badge-amber { background: rgba(245,158,11,0.16); color: #fcd34d; border: 1px solid rgba(245,158,11,0.35); }
-    .badge-green { background: rgba(16,185,129,0.16); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.35); }
-    .badge-sky { background: rgba(56,189,248,0.16); color: #7dd3fc; border: 1px solid rgba(56,189,248,0.35); }
-    .badge-purple { background: rgba(168,85,247,0.16); color: #d8b4fe; border: 1px solid rgba(168,85,247,0.35); }
 
-    /* Buttons */
-    .btn {
-      border: none; border-radius: 10px; padding: 9px 14px;
-      font-size: 0.84rem; font-weight: 700; cursor: pointer;
-      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-      transition: transform 0.08s ease, opacity 0.15s ease;
-    }
-    .btn:active { transform: scale(0.97); }
-    .btn-primary { background: var(--accent); color: #fff; }
-    .btn-emerald { background: var(--emerald); color: #052e16; }
-    .btn-amber { background: var(--amber); color: #271502; }
-    .btn-ghost { background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border); }
-    .btn-sm { padding: 6px 10px; font-size: 0.76rem; border-radius: 8px; }
-
-    /* Tabs */
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
-      background: rgba(17, 24, 39, 0.96); backdrop-filter: blur(12px);
+    .rm-box {
+      margin-top: 12px;
+      padding-top: 12px;
       border-top: 1px solid var(--border);
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
     }
-    .nav-btn {
-      background: transparent; border: none; color: var(--text-muted);
-      display: flex; flex-direction: column; align-items: center; gap: 3px;
-      padding: 5px 2px; font-size: 0.72rem; font-weight: 700; cursor: pointer;
+
+    .profile-summary-bar {
+      margin-top: 10px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      font-size: 0.78rem;
+      color: #bfdbfe;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
     }
-    .nav-btn span.ico { font-size: 1.15rem; }
-    .nav-btn.active { color: var(--accent); }
+
+    /* Cards & Tabs */
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    /* Presets Grid */
+    .presets-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    @media (min-width: 600px) {
+      .presets-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .preset-btn {
+      min-height: 48px;
+      padding: 8px 10px;
+      border-radius: 11px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .preset-btn.active {
+      background: rgba(239, 68, 68, 0.16);
+      border-color: var(--crimson);
+    }
+
+    .preset-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .preset-meta {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    /* Custom Timer Panel */
+    .custom-timer-box {
+      display: none;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .custom-timer-box.open {
+      display: block;
+    }
 
     /* Timer Ring */
-    .preset-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 7px; margin-bottom: 12px;
+    .timer-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 8px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top, #172033, #0d1320);
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
     }
-    .preset-chip {
-      background: var(--bg); border: 1px solid var(--border); color: var(--text);
-      border-radius: 10px; padding: 8px 10px; text-align: left; cursor: pointer;
+
+    .phase-pill {
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
     }
-    .preset-chip.active { border-color: var(--accent); background: rgba(239,68,68,0.14); }
-    .preset-chip strong { display: block; font-size: 0.8rem; }
-    .preset-chip small { color: var(--text-muted); font-size: 0.7rem; }
+
+    .phase-ready { color: #93c5fd; border-color: rgba(59, 130, 246, 0.4); }
+    .phase-prep { color: #fcd34d; border-color: rgba(245, 158, 11, 0.5); background: rgba(245, 158, 11, 0.14); }
+    .phase-work { color: #fca5a5; border-color: rgba(239, 68, 68, 0.55); background: rgba(239, 68, 68, 0.16); }
+    .phase-burst { color: #fef08a; border-color: #f59e0b; background: rgba(245, 158, 11, 0.28); }
+    .phase-rest { color: #6ee7b7; border-color: rgba(16, 185, 129, 0.5); background: rgba(16, 185, 129, 0.15); }
+    .phase-done { color: #c4b5fd; border-color: rgba(139, 92, 246, 0.5); background: rgba(139, 92, 246, 0.15); }
 
     .ring-wrap {
-      position: relative; width: 230px; height: 230px; margin: 8px auto 14px;
-      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      width: 224px;
+      height: 224px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .ring-svg { transform: rotate(-90deg); width: 230px; height: 230px; }
-    .ring-bg { fill: none; stroke: var(--bg-elevated); stroke-width: 12; }
-    .ring-fg {
-      fill: none; stroke: var(--accent); stroke-width: 12; stroke-linecap: round;
+
+    .ring-svg {
+      transform: rotate(-90deg);
+      width: 224px;
+      height: 224px;
+    }
+
+    .ring-bg {
+      fill: none;
+      stroke: #1f2937;
+      stroke-width: 11;
+    }
+
+    .ring-progress {
+      fill: none;
+      stroke: var(--crimson);
+      stroke-width: 11;
+      stroke-linecap: round;
       transition: stroke-dashoffset 0.25s linear, stroke 0.2s ease;
     }
-    .ring-center {
-      position: absolute; text-align: center; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; padding: 12px;
-    }
-    .phase-pill {
-      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em;
-      padding: 3px 9px; border-radius: 999px; margin-bottom: 4px;
-      background: rgba(239,68,68,0.18); color: #fca5a5;
-    }
-    .timer-digits { font-size: 2.55rem; font-weight: 900; font-variant-numeric: tabular-nums; line-height: 1.05; }
-    .round-indicator { font-size: 0.8rem; color: var(--text-muted); font-weight: 700; margin-top: 4px; }
-    .intra-cue { font-size: 0.72rem; color: #fcd34d; font-weight: 700; margin-top: 3px; min-height: 16px; }
 
-    .timer-controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
-    .combo-box {
-      background: var(--bg); border: 1px dashed var(--border); border-radius: 12px;
-      padding: 12px; text-align: center;
+    .ring-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
-    .combo-text { font-size: 1.02rem; font-weight: 800; color: #f8fafc; margin: 6px 0; }
+
+    .clock-digits {
+      font-size: 3.1rem;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .round-indicator {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .rhythm-sub {
+      margin-top: 4px;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .timer-controls {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 8px;
+      width: 100%;
+      margin-top: 12px;
+    }
+
+    .btn-primary {
+      min-height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--crimson), var(--crimson-dark));
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+    }
+
+    .btn-primary.paused-state {
+      background: linear-gradient(135deg, var(--emerald), #059669);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-secondary {
+      min-height: 48px;
+      border-radius: 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.84rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 0 10px;
+    }
+
+    .btn-sm {
+      min-height: 38px;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    /* Live Combo Box */
+    .combo-card {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(239, 68, 68, 0.08));
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .combo-display {
+      background: rgba(9, 13, 22, 0.65);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin: 8px 0;
+    }
+
+    .combo-seq {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fcd34d;
+      margin-bottom: 4px;
+    }
+
+    .combo-detail {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .punch-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .punch-chip {
+      font-size: 0.7rem;
+      padding: 3px 7px;
+      border-radius: 6px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: #d1d5db;
+    }
 
     /* Campamento */
-    .week-strip {
-      display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 10px;
+    .meso-banner {
+      padding: 12px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.14), rgba(139, 92, 246, 0.14));
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      margin-bottom: 12px;
     }
-    .week-pill {
-      flex: 0 0 auto; background: var(--bg); border: 1px solid var(--border);
-      color: var(--text-muted); border-radius: 10px; padding: 6px 11px;
-      font-size: 0.76rem; font-weight: 700; cursor: pointer;
-    }
-    .week-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-    .day-tabs {
-      display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; margin-bottom: 12px;
+    .meso-title {
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: #c7d2fe;
     }
-    .day-tab {
-      background: var(--bg); border: 1px solid var(--border); color: var(--text-muted);
-      border-radius: 9px; padding: 7px 2px; text-align: center; font-size: 0.74rem;
-      font-weight: 700; cursor: pointer;
+
+    .meso-sub {
+      font-size: 0.78rem;
+      color: #d1d5db;
+      margin-top: 3px;
     }
-    .day-tab.active { border-color: var(--accent); color: #fff; background: rgba(239,68,68,0.18); }
-    .day-tab.sparring-day { border-color: rgba(245,158,11,0.5); }
+
+    .day-pills {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      margin: 10px 0 12px;
+    }
+
+    .day-pill {
+      min-height: 44px;
+      border-radius: 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.76rem;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 2px;
+    }
+
+    .day-pill.active {
+      background: var(--crimson);
+      border-color: #f87171;
+      color: #fff;
+    }
+
+    .day-pill.sparring-day {
+      border-color: var(--gold);
+    }
+
+    .day-dot {
+      font-size: 0.62rem;
+      opacity: 0.85;
+    }
 
     .session-block {
-      background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
-      padding: 12px; margin-bottom: 10px;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
     }
-    .session-block.sparring-highlight {
-      border-color: rgba(245,158,11,0.65);
-      background: linear-gradient(180deg, rgba(245,158,11,0.09), rgba(9,13,22,0.95));
-    }
-    .exercise-item {
-      display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
-      padding: 8px 0; border-bottom: 1px solid rgba(40,53,72,0.6); font-size: 0.83rem;
-    }
-    .exercise-item:last-child { border-bottom: none; }
-    .load-tag {
-      background: rgba(56,189,248,0.16); color: #7dd3fc; border: 1px solid rgba(56,189,248,0.3);
-      border-radius: 7px; padding: 2px 7px; font-size: 0.74rem; font-weight: 800; white-space: nowrap;
-    }
-    .transfer-alert {
-      margin-top: 8px; padding: 9px 10px; border-radius: 9px;
-      background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.35);
-      font-size: 0.78rem; color: #fecaca;
-    }
-    .nutrition-box {
-      padding: 10px 12px; border-radius: 10px;
-      background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3);
-      font-size: 0.79rem; color: #a7f3d0; margin-bottom: 10px;
-    }
-    .check-row {
-      display: flex; align-items: center; gap: 8px; margin-top: 8px;
-      font-size: 0.8rem; font-weight: 700; cursor: pointer;
-    }
-    .check-row input { width: 17px; height: 17px; accent-color: var(--emerald); }
 
-    /* Filters & Catalog */
-    .filter-row { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 10px; }
-    .filter-pill {
-      flex: 0 0 auto; background: var(--bg); border: 1px solid var(--border);
-      color: var(--text-muted); border-radius: 999px; padding: 5px 11px;
-      font-size: 0.75rem; font-weight: 700; cursor: pointer;
+    .session-block.am-block {
+      border-left: 4px solid var(--gold);
     }
-    .filter-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .search-input {
-      width: 100%; background: var(--bg); border: 1px solid var(--border);
-      color: var(--text); border-radius: 10px; padding: 9px 12px; font-size: 0.85rem;
+
+    .session-block.pm-block {
+      border-left: 4px solid var(--crimson);
+    }
+
+    .session-block.nutri-block {
+      border-left: 4px solid var(--emerald);
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .session-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .session-tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .ex-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .ex-item:last-child {
+      border-bottom: none;
+    }
+
+    .ex-check {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      accent-color: var(--emerald);
+      cursor: pointer;
+    }
+
+    .ex-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .ex-name.done {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
+    .ex-meta {
+      font-size: 0.76rem;
+      color: #fcd34d;
+      font-weight: 600;
+    }
+
+    .transfer-callout {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 9px;
+      background: rgba(239, 68, 68, 0.14);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      font-size: 0.78rem;
+      color: #fecaca;
+    }
+
+    /* Vías & Catálogo */
+    .filter-row {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 6px;
       margin-bottom: 10px;
     }
-    .muted { color: var(--text-muted); font-size: 0.8rem; }
+
+    .chip-btn {
+      min-height: 36px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .chip-btn.active {
+      background: var(--crimson);
+      border-color: var(--crimson);
+      color: #fff;
+    }
+
+    .pathway-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+
+    .pathway-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .pathway-badge {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+
+    .cat-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 600px) {
+      .cat-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .cat-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .cat-cat {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 3px;
+    }
+
+    .cat-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .cat-desc {
+      font-size: 0.8rem;
+      color: #d1d5db;
+      margin-bottom: 6px;
+    }
+
+    .cat-cue {
+      font-size: 0.74rem;
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.1);
+      padding: 5px 8px;
+      border-radius: 8px;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 45;
+      background: rgba(17, 24, 39, 0.97);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    }
+
+    .nav-btn {
+      min-height: 48px;
+      background: transparent;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      border-radius: 10px;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+
+    .nav-btn.active {
+      color: #fff;
+      background: rgba(239, 68, 68, 0.16);
+    }
+
+    .nav-icon {
+      font-size: 1.15rem;
+    }
+
+    /* Toast & Modal */
+    .toast {
+      position: fixed;
+      bottom: 74px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1f2937;
+      color: #fff;
+      border: 1px solid var(--gold);
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 60;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      background: rgba(0, 0, 0, 0.72);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      max-width: 420px;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="topbar-inner">
+  <div id="errorBanner"></div>
+
+  <header class="app-header">
+    <div class="header-top">
       <div class="brand">
         <div class="brand-icon">🥊</div>
         <div>
           <div class="brand-title">BoxCoach Pro</div>
-          <span class="brand-sub" id="headerSub">Campamento &amp; Crono Profesional</span>
+          <div class="brand-sub" id="headerSubtitle">Campamento &amp; Crono · v4</div>
         </div>
       </div>
-      <div class="top-actions">
-        <span class="status-pill" id="offlineBadge">
-          <span class="status-dot"></span>
-          <span id="offlineText">Modo Offline Activo</span>
-        </span>
-        <button type="button" class="btn-profile-toggle" id="btnToggleProfile">⚙️ Perfil / 1RM</button>
+      <div class="header-actions">
+        <button type="button" class="pill-btn" id="btnToggleProfile" data-action="toggle-profile">👤 Perfil / 1RM</button>
+        <button type="button" class="pill-btn" id="btnToggleSound" data-action="toggle-sound">🔊 Audio</button>
+        <button type="button" class="pill-btn install-btn" id="btnInstallApp" data-action="install-app">📲 Instalar</button>
       </div>
+    </div>
+    <div class="status-strip">
+      <div class="status-badges">
+        <span class="badge online" id="netBadge">🟢 Online</span>
+        <span class="badge" id="wakeBadge">💤 Pantalla Normal</span>
+      </div>
+      <span id="daysToFightBadge">⏳ Calcula tu pelea</span>
     </div>
   </header>
 
-  <section class="profile-drawer" id="profileDrawer">
-    <div class="profile-inner">
-      <div class="section-label">Perfil del Boxeador &amp; Fechas de Campamento</div>
+  <main class="container">
+    <!-- Collapsible Profile & 1RM Panel -->
+    <section class="profile-drawer" id="profileDrawer" aria-label="Perfil y marcas 1RM">
+      <div class="section-title">
+        <span>👤 Perfil del Boxeador &amp; Marcas 1RM</span>
+        <button type="button" class="pill-btn" data-action="reset-profile">↺ Restablecer</button>
+      </div>
       <div class="grid-2">
         <div class="field">
-          <label for="profName">Nombre</label>
-          <input type="text" id="profName" placeholder="Boxeador" />
+          <label for="profName">Nombre / Apodo</label>
+          <input type="text" id="profName" data-profile-key="name" placeholder="Ej. El Tigre" />
         </div>
         <div class="field">
           <label for="profLevel">Modalidad</label>
-          <select id="profLevel">
-            <option value="Amateur">Amateur (3×3')</option>
-            <option value="Profesional">Profesional (6-12×3')</option>
+          <select id="profLevel" data-profile-key="level">
+            <option value="amateur">Amateur (3×3')</option>
+            <option value="pro">Profesional (8–12×3')</option>
           </select>
         </div>
         <div class="field">
-          <label for="profStance">Guardia</label>
-          <select id="profStance">
-            <option value="Ortodoxa">Ortodoxa (Diestro)</option>
-            <option value="Zurda">Zurda (Southpaw)</option>
+          <label for="profStyle">Estilo de Pelea (Combinaciones)</label>
+          <select id="profStyle" data-profile-key="style">
+            <option value="estilista">Estilista / Técnico (Distancia)</option>
+            <option value="fajador">Fajador / Presión (Corta distancia)</option>
+            <option value="contragolpeador">Contragolpeador (Esquiva y respuesta)</option>
+            <option value="switch">Switch / Cambio de guardia</option>
           </select>
         </div>
         <div class="field">
-          <label for="profStyle">Estilo de Combate</label>
-          <select id="profStyle">
-            <option value="Mixto">Mixto / Técnico</option>
-            <option value="Estilista">Estilista / Contragolpe</option>
-            <option value="Fajador">Fajador / Presión</option>
-          </select>
+          <label for="profHeight">Estatura (cm)</label>
+          <input type="number" id="profHeight" data-profile-key="height" min="130" max="220" step="1" />
         </div>
         <div class="field">
-          <label for="profStart">Inicio Campamento</label>
-          <input type="date" id="profStart" />
+          <label for="profWeight">Peso Actual (kg)</label>
+          <input type="number" id="profWeight" data-profile-key="weight" min="40" max="150" step="0.5" />
         </div>
         <div class="field">
-          <label for="profFight">Fecha de Pelea</label>
-          <input type="date" id="profFight" />
+          <label for="profTargetWeight">Peso Objetivo Pelea (kg)</label>
+          <input type="number" id="profTargetWeight" data-profile-key="targetWeight" min="40" max="150" step="0.5" />
+        </div>
+        <div class="field">
+          <label for="profCampStart">Inicio Campamento</label>
+          <input type="date" id="profCampStart" data-profile-key="campStart" />
+        </div>
+        <div class="field">
+          <label for="profFightDate">Fecha de Pelea</label>
+          <input type="date" id="profFightDate" data-profile-key="fightDate" />
         </div>
       </div>
 
-      <div class="section-label" style="margin-top:6px;">Marcas Máximas 1RM (kg) — Recálculo Automático</div>
-      <div class="grid-3">
-        <div class="field">
-          <label for="rmBench">Press Banca (kg)</label>
-          <input type="number" id="rmBench" min="10" max="300" step="1" />
+      <div class="rm-box">
+        <div class="section-title" style="font-size:0.85rem;">
+          <span>🏋️ Marcas 1RM (Recálculo automático de kilos en Campamento)</span>
         </div>
-        <div class="field">
-          <label for="rmShoulder">Press Hombro (kg)</label>
-          <input type="number" id="rmShoulder" min="5" max="200" step="1" />
-        </div>
-        <div class="field">
-          <label for="rmSquat">Sentadilla (kg)</label>
-          <input type="number" id="rmSquat" min="10" max="400" step="1" />
-        </div>
-        <div class="field">
-          <label for="rmRow">Remo Polea (kg)</label>
-          <input type="number" id="rmRow" min="10" max="250" step="1" />
-        </div>
-        <div class="field">
-          <label for="rmHamstring">Isquiotibial (kg)</label>
-          <input type="number" id="rmHamstring" min="5" max="200" step="1" />
+        <div class="grid-3">
+          <div class="field">
+            <label for="rmBench">Press Banca (kg)</label>
+            <input type="number" id="rmBench" data-rm-key="bench" min="10" max="300" step="1" />
+          </div>
+          <div class="field">
+            <label for="rmShoulder">Press Hombro (kg)</label>
+            <input type="number" id="rmShoulder" data-rm-key="shoulder" min="5" max="200" step="1" />
+          </div>
+          <div class="field">
+            <label for="rmSquat">Sentadilla (kg)</label>
+            <input type="number" id="rmSquat" data-rm-key="squat" min="15" max="350" step="1" />
+          </div>
+          <div class="field">
+            <label for="rmRow">Remo Polea (kg)</label>
+            <input type="number" id="rmRow" data-rm-key="row" min="10" max="250" step="1" />
+          </div>
+          <div class="field">
+            <label for="rmHamstring">Isquiotibial (kg)</label>
+            <input type="number" id="rmHamstring" data-rm-key="hamstring" min="10" max="200" step="1" />
+          </div>
         </div>
       </div>
-      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:4px;">
-        <button type="button" class="btn btn-emerald btn-sm" id="btnSaveProfile">✓ Guardar y Cerrar</button>
-      </div>
-    </div>
-  </section>
 
-  <main class="container">
+      <div class="profile-summary-bar" id="profileSummaryBar"></div>
+    </section>
+
     <!-- TAB 1: CRONO -->
-    <section class="tab-panel active" id="tab-crono">
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title" id="timerSessionTitle">Cronómetro de Asaltos</div>
-            <div class="muted" id="timerProtocolMeta">3 Rounds × 3:00 trabajo · 1:00 descanso</div>
-          </div>
-          <button type="button" class="btn btn-ghost btn-sm" id="btnTestBell">🔔 Probar Campana</button>
+    <section class="tab-panel active" id="panel-crono">
+      <div class="presets-grid" id="presetsGrid">
+        <button type="button" class="preset-btn active" data-action="select-preset" data-preset="amateur">
+          <span class="preset-name">🥊 Amateur Oficial</span>
+          <span class="preset-meta">3 rounds · 3'00" / 1'00"</span>
+        </button>
+        <button type="button" class="preset-btn" data-action="select-preset" data-preset="pro">
+          <span class="preset-name">🏆 Profesional</span>
+          <span class="preset-meta">8 rounds · 3'00" / 1'00"</span>
+        </button>
+        <button type="button" class="preset-btn" data-action="select-preset" data-preset="speedbag">
+          <span class="preset-name">⚡ Saco Velocidad</span>
+          <span class="preset-meta">4 rounds · 2'00" / 1'00"</span>
+        </button>
+        <button type="button" class="preset-btn" data-action="select-preset" data-preset="phosphagen">
+          <span class="preset-name">💥 Fosfagénico</span>
+          <span class="preset-meta">3×3' · Ráfaga 5"R / 25"N</span>
+        </button>
+        <button type="button" class="preset-btn" data-action="select-preset" data-preset="glycolytic">
+          <span class="preset-name">🔥 Glucolítico</span>
+          <span class="preset-meta">3×3' · Ráfaga 20"R / 40"N</span>
+        </button>
+        <button type="button" class="preset-btn" data-action="select-preset" data-preset="custom">
+          <span class="preset-name">⚙️ Personalizado</span>
+          <span class="preset-meta">Ajustar tiempos</span>
+        </button>
+      </div>
+
+      <div class="custom-timer-box" id="customTimerBox">
+        <div class="section-title" style="font-size:0.84rem;">
+          <span>⚙️ Configuración Manual de Asaltos</span>
         </div>
-
-        <div class="preset-grid" id="presetGrid"></div>
-
-        <div id="customTimerBox" style="display:none; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:10px; margin-bottom:10px;">
-          <div class="grid-3">
-            <div class="field">
-              <label for="custRounds">Rounds</label>
-              <input type="number" id="custRounds" min="1" max="15" value="4" />
-            </div>
-            <div class="field">
-              <label for="custWork">Trabajo (seg)</label>
-              <input type="number" id="custWork" min="15" max="600" value="180" />
-            </div>
-            <div class="field">
-              <label for="custRest">Descanso (seg)</label>
-              <input type="number" id="custRest" min="10" max="300" value="60" />
-            </div>
-            <div class="field">
-              <label for="custBurst">Ráfaga (seg, 0=no)</label>
-              <input type="number" id="custBurst" min="0" max="120" value="0" />
-            </div>
-            <div class="field">
-              <label for="custNormal">Ritmo Normal (seg)</label>
-              <input type="number" id="custNormal" min="0" max="180" value="0" />
-            </div>
-            <div class="field" style="justify-content:flex-end;">
-              <button type="button" class="btn btn-primary btn-sm" id="btnApplyCustom" style="height:36px;">Aplicar</button>
-            </div>
+        <div class="grid-3">
+          <div class="field">
+            <label for="custRounds">Rounds</label>
+            <input type="number" id="custRounds" data-custom-timer="rounds" min="1" max="15" value="3" />
+          </div>
+          <div class="field">
+            <label for="custWorkMin">Trabajo (min)</label>
+            <input type="number" id="custWorkMin" data-custom-timer="workMin" min="0" max="15" value="3" />
+          </div>
+          <div class="field">
+            <label for="custWorkSec">Trabajo (seg)</label>
+            <input type="number" id="custWorkSec" data-custom-timer="workSec" min="0" max="59" value="0" />
+          </div>
+          <div class="field">
+            <label for="custRestSec">Descanso (seg)</label>
+            <input type="number" id="custRestSec" data-custom-timer="restSec" min="5" max="300" value="60" />
+          </div>
+          <div class="field">
+            <label for="custBurstFast">Ráfaga Rápida (s)</label>
+            <input type="number" id="custBurstFast" data-custom-timer="burstFast" min="0" max="120" value="0" />
+          </div>
+          <div class="field">
+            <label for="custBurstNorm">Ritmo Normal (s)</label>
+            <input type="number" id="custBurstNorm" data-custom-timer="burstNorm" min="0" max="180" value="0" />
           </div>
         </div>
+      </div>
 
+      <div class="timer-stage">
+        <div class="phase-pill phase-ready" id="timerPhaseBadge">LISTO · AMATEUR OFICIAL</div>
         <div class="ring-wrap">
-          <svg class="ring-svg" viewBox="0 0 230 230">
-            <circle class="ring-bg" cx="115" cy="115" r="100"></circle>
-            <circle class="ring-fg" id="ringProgress" cx="115" cy="115" r="100"
-              stroke-dasharray="628.32" stroke-dashoffset="0"></circle>
+          <svg class="ring-svg" viewBox="0 0 224 224">
+            <circle class="ring-bg" cx="112" cy="112" r="98"></circle>
+            <circle class="ring-progress" id="timerRing" cx="112" cy="112" r="98" stroke-dasharray="615.75" stroke-dashoffset="0"></circle>
           </svg>
           <div class="ring-center">
-            <div class="phase-pill" id="timerPhaseLabel">LISTO</div>
-            <div class="timer-digits" id="timerDisplay">03:00</div>
-            <div class="round-indicator" id="roundDisplay">Round 1 de 3</div>
-            <div class="intra-cue" id="intraCueDisplay"></div>
+            <div class="clock-digits" id="timerClock">03:00</div>
+            <div class="round-indicator" id="timerRoundText">Asalto 1 / 3</div>
+            <div class="rhythm-sub" id="timerSubText">Campana inicial · 5s prep</div>
           </div>
         </div>
 
         <div class="timer-controls">
-          <button type="button" class="btn btn-emerald" id="btnTimerStart">▶ Iniciar</button>
-          <button type="button" class="btn btn-amber" id="btnTimerPause" disabled>⏸ Pausar</button>
-          <button type="button" class="btn btn-ghost" id="btnTimerReset">↺ Reiniciar</button>
-          <button type="button" class="btn btn-ghost btn-sm" id="btnMuteToggle">🔊 Audio ON</button>
+          <button type="button" class="btn-primary" id="btnTimerToggle" data-action="timer-toggle">▶ Iniciar</button>
+          <button type="button" class="btn-secondary" data-action="timer-skip">⏭ Saltar</button>
+          <button type="button" class="btn-secondary" data-action="timer-reset">↺ Reset</button>
         </div>
+        <div style="margin-top:8px; width:100%; display:flex; justify-content:flex-end;">
+          <button type="button" class="pill-btn" data-action="test-bell">🔔 Probar Campana y Vibración</button>
+        </div>
+      </div>
 
-        <div class="combo-box">
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-            <span class="section-label" style="margin:0;">Combinación Táctica (<span id="comboProfileTag">Ortodoxa · Mixto</span>)</span>
-            <label style="font-size:0.72rem; color:var(--text-muted); display:flex; align-items:center; gap:4px; cursor:pointer;">
-              <input type="checkbox" id="chkAutoCombo" checked /> Auto c/12s
-            </label>
+      <div class="card combo-card">
+        <div class="section-title">
+          <span>🎯 Combinación en Vivo (<span id="comboStyleLabel">Estilista</span>)</span>
+          <div style="display:flex; gap:6px;">
+            <button type="button" class="pill-btn" id="btnAutoCombo" data-action="toggle-auto-combo">🔄 Auto: OFF</button>
+            <button type="button" class="pill-btn" data-action="next-combo">🎲 Siguiente</button>
           </div>
-          <div class="combo-text" id="comboDisplay">1 - 2 - Paso lateral - 3 (Gancho hígado)</div>
-          <button type="button" class="btn btn-ghost btn-sm" id="btnNextCombo">🎲 Nueva Combinación</button>
+        </div>
+        <div class="combo-display">
+          <div class="combo-seq" id="comboSequence">1 - 1 - 2 · Paso atrás + 2</div>
+          <div class="combo-detail" id="comboDetail">Doble jab para medir distancia, recto trasero y salida fuera de alcance.</div>
+        </div>
+        <div class="punch-legend">
+          <span class="punch-chip"><b>1</b> Jab</span>
+          <span class="punch-chip"><b>2</b> Directo</span>
+          <span class="punch-chip"><b>3</b> Hook Izq</span>
+          <span class="punch-chip"><b>4</b> Hook Der</span>
+          <span class="punch-chip"><b>5</b> Upper Izq</span>
+          <span class="punch-chip"><b>6</b> Upper Der</span>
         </div>
       </div>
     </section>
 
     <!-- TAB 2: CAMPAMENTO -->
-    <section class="tab-panel" id="tab-campamento">
+    <section class="tab-panel" id="panel-campamento">
+      <div class="meso-banner">
+        <div class="meso-title" id="mesoTitle">Mesociclo Actual: Acumulación Base</div>
+        <div class="meso-sub" id="mesoSub">Carga: 60% 1RM · 3×12 rep · Descanso 60" · Base enzimática y resistencia muscular</div>
+      </div>
+
       <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Campamento Doble Turno</div>
-            <div class="muted" id="campSummaryText">Periodización científica AM Pesas + PM Boxeo</div>
+        <div class="grid-2">
+          <div class="field">
+            <label for="campFreqSelect">Días de Gimnasio AM / Semana</label>
+            <select id="campFreqSelect" data-camp-control="freq">
+              <option value="4">4 Días (L-M-X-J) · Grupos Separados</option>
+              <option value="3_grouped">3 Días (L-M-J) · Grupos Agrupados</option>
+              <option value="3_alt">3 Días (L-X-V) · Intercalado + Act.</option>
+              <option value="2">2 Días (L-J) · Superior / Inferior</option>
+              <option value="5">5 Días (L-V) · Especializado</option>
+            </select>
           </div>
-          <span class="badge badge-red" id="mesocycleBadge">Acumulación</span>
+          <div class="field">
+            <label for="campPhaseSelect">Mesociclo / Fase</label>
+            <select id="campPhaseSelect" data-camp-control="phase">
+              <option value="auto">Automático (según fechas)</option>
+              <option value="base">1. Acumulación Base (60% RM)</option>
+              <option value="max">2. Fuerza Máxima Neural (88% RM)</option>
+              <option value="power">3. Transformación Balística (35% RM)</option>
+              <option value="taper">4. Realización / Fight Week (25% RM)</option>
+            </select>
+          </div>
         </div>
 
-        <div class="field">
-          <label for="gymSplitSelect">Frecuencia Semanal de Gimnasio AM (Grupos Musculares)</label>
-          <select id="gymSplitSelect">
-            <option value="4d">4 Días Gym (L-M-X-J) — Grupos Separados (Viernes libre pre-Sparring)</option>
-            <option value="3d_lmj">3 Días Gym (L-M-J) — Grupos Agrupados (Viernes libre pre-Sparring)</option>
-            <option value="3d_lxv">3 Días Gym Intercalado (L-X-V) — Viernes AM activación ligera</option>
-            <option value="2d_lj">2 Días Gym (L-J) — Superior / Inferior (Viernes libre pre-Sparring)</option>
-            <option value="5d_lv">5 Días Gym (L-V) — Especializado + Activación Viernes AM</option>
-          </select>
-        </div>
-
-        <div class="section-label">Semanas del Campamento (Microciclos)</div>
-        <div class="week-strip" id="weekStrip"></div>
-
-        <div class="day-tabs" id="dayTabs"></div>
+        <div class="day-pills" id="campDayPills"></div>
 
         <div id="campDayContent"></div>
       </div>
     </section>
 
-    <!-- TAB 3: VÍAS ENERGÉTICAS MERLO (2014) -->
-    <section class="tab-panel" id="tab-vias">
+    <!-- TAB 3: VÍAS ENERGÉTICAS -->
+    <section class="tab-panel" id="panel-vias">
       <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Vías Energéticas — Protocolo Merlo (2014)</div>
-            <div class="muted">Desarrollo enzimático (Capacidad) y sensibilidad (Potencia)</div>
-          </div>
-          <span class="badge badge-purple">Bioenergética</span>
+        <div class="section-title">
+          <span>⚡ Vías Energéticas (Merlo, 2014)</span>
         </div>
+        <p style="font-size:0.8rem; color:var(--muted); margin:0 0 10px;">
+          Selecciona tu nivel de progresión metodológica (primero capacidad enzimática, luego potencia específica) y ejecuta el protocolo directamente en el cronómetro.
+        </p>
         <div class="filter-row" id="viasLevelRow">
-          <button type="button" class="filter-pill active" data-vlevel="1">Nivel 1 · Base</button>
-          <button type="button" class="filter-pill" data-vlevel="2">Nivel 2 · Intermedio</button>
-          <button type="button" class="filter-pill" data-vlevel="3">Nivel 3 · Competitivo</button>
+          <button type="button" class="chip-btn active" data-action="select-vias-level" data-level="1">Nivel 1 · Base</button>
+          <button type="button" class="chip-btn" data-action="select-vias-level" data-level="2">Nivel 2 · Desarrollo</button>
+          <button type="button" class="chip-btn" data-action="select-vias-level" data-level="3">Nivel 3 · Competitivo</button>
         </div>
-        <div id="viasContainer"></div>
+        <div id="viasList"></div>
       </div>
     </section>
 
-    <!-- TAB 4: CATÁLOGO TÉCNICO Y FÍSICO -->
-    <section class="tab-panel" id="tab-catalogo">
+    <!-- TAB 4: CATÁLOGO -->
+    <section class="tab-panel" id="panel-catalogo">
       <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">Catálogo Técnico &amp; Preparación Física</div>
-            <div class="muted">Golpes, variantes de jab, desplazamientos, pesas y compensatorios</div>
-          </div>
+        <div class="section-title">
+          <span>📚 Catálogo Técnico, Variantes de Jab y Físico</span>
         </div>
-        <input type="search" class="search-input" id="catalogSearch" placeholder="Buscar jab, pivote, sentadilla, cuello, core..." />
+        <div class="field" style="margin-bottom:10px;">
+          <input type="search" id="catalogSearchInput" data-catalog-search="1" placeholder="🔍 Buscar jab, pivote, cadena cinética, core, saco..." />
+        </div>
         <div class="filter-row" id="catalogFilterRow">
-          <button type="button" class="filter-pill active" data-cat="all">Todos</button>
-          <button type="button" class="filter-pill" data-cat="jabs">Jabs y Golpes</button>
-          <button type="button" class="filter-pill" data-cat="pies">Guardia y Pies</button>
-          <button type="button" class="filter-pill" data-cat="fuerza">Fuerza / Gimnasio</button>
-          <button type="button" class="filter-pill" data-cat="core">Core y Cuello</button>
+          <button type="button" class="chip-btn active" data-action="filter-catalog" data-cat="all">Todos</button>
+          <button type="button" class="chip-btn" data-action="filter-catalog" data-cat="jab">Variantes de Jab</button>
+          <button type="button" class="chip-btn" data-action="filter-catalog" data-cat="golpes">Golpes y Combos</button>
+          <button type="button" class="chip-btn" data-action="filter-catalog" data-cat="pies">Defensa y Pies</button>
+          <button type="button" class="chip-btn" data-action="filter-catalog" data-cat="fuerza">Fuerza y Core</button>
+          <button type="button" class="chip-btn" data-action="filter-catalog" data-cat="implementos">Implementos</button>
         </div>
-        <div id="catalogContainer"></div>
+        <div class="cat-grid" id="catalogGrid"></div>
       </div>
     </section>
   </main>
 
-  <nav class="bottom-nav">
-    <button type="button" class="nav-btn active" data-tab="crono">
-      <span class="ico">⏱️</span><span>Crono</span>
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav" aria-label="Navegación principal">
+    <button type="button" class="nav-btn active" data-action="switch-tab" data-tab="crono">
+      <span class="nav-icon">⏱️</span>
+      <span>Crono</span>
     </button>
-    <button type="button" class="nav-btn" data-tab="campamento">
-      <span class="ico">🗓️</span><span>Campamento</span>
+    <button type="button" class="nav-btn" data-action="switch-tab" data-tab="campamento">
+      <span class="nav-icon">🏕️</span>
+      <span>Campamento</span>
     </button>
-    <button type="button" class="nav-btn" data-tab="vias">
-      <span class="ico">⚡</span><span>Vías</span>
+    <button type="button" class="nav-btn" data-action="switch-tab" data-tab="vias">
+      <span class="nav-icon">⚡</span>
+      <span>Vías</span>
     </button>
-    <button type="button" class="nav-btn" data-tab="catalogo">
-      <span class="ico">📚</span><span>Catálogo</span>
+    <button type="button" class="nav-btn" data-action="switch-tab" data-tab="catalogo">
+      <span class="nav-icon">📚</span>
+      <span>Catálogo</span>
     </button>
   </nav>
 
+  <!-- Toast -->
+  <div class="toast" id="toastMsg" role="status" aria-live="polite"></div>
+
+  <!-- Install Help Modal -->
+  <div class="modal-backdrop" id="installModal">
+    <div class="modal-box">
+      <div class="section-title">
+        <span>📲 Instalar BoxCoach Pro en tu Celular</span>
+        <button type="button" class="pill-btn" data-action="close-install-modal">✕</button>
+      </div>
+      <p style="font-size:0.84rem; color:#d1d5db; margin:0 0 10px;">
+        Esta aplicación funciona <strong>100% sin internet</strong> una vez agregada a tu pantalla de inicio:
+      </p>
+      <ul style="font-size:0.82rem; color:#d1d5db; padding-left:18px; margin:0 0 14px;">
+        <li style="margin-bottom:6px;"><strong>Android (Chrome / Edge):</strong> Toca el menú <b>⋮</b> (arriba a la derecha) y selecciona <b>"Instalar aplicación"</b> o <b>"Agregar a la pantalla principal"</b>.</li>
+        <li><strong>iPhone (Safari):</strong> Toca el botón <b>Compartir (□↑)</b> en la barra inferior y selecciona <b>"Agregar a inicio"</b>.</li>
+      </ul>
+      <button type="button" class="btn-primary" style="width:100%;" data-action="close-install-modal">Entendido</button>
+    </div>
+  </div>
+
   <script>
     (function () {
-      'use strict';
+      "use strict";
 
-      /* ================= 1. DATE & SANITIZE UTILS ================= */
-      const DateUtils = {
-        parseLocalDate(isoStr) {
-          if (!isoStr || typeof isoStr !== 'string') return new Date();
-          const parts = isoStr.split('-').map(Number);
-          if (parts.length !== 3 || parts.some(isNaN)) return new Date();
-          return new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0);
-        },
-        toISODate(dateObj) {
-          const y = dateObj.getFullYear();
-          const m = String(dateObj.getMonth() + 1).padStart(2, '0');
-          const d = String(dateObj.getDate()).padStart(2, '0');
-          return y + '-' + m + '-' + d;
-        },
-        addDays(isoStr, days) {
-          const dt = this.parseLocalDate(isoStr);
-          dt.setDate(dt.getDate() + days);
-          return this.toISODate(dt);
-        },
-        diffDays(startIso, endIso) {
-          const a = this.parseLocalDate(startIso);
-          const b = this.parseLocalDate(endIso);
-          return Math.round((b - a) / 86400000);
-        },
-        formatShort(isoStr) {
-          const dt = this.parseLocalDate(isoStr);
-          const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-          return dt.getDate() + ' ' + months[dt.getMonth()];
+      // Global error trap so any unexpected issue is surfaced cleanly
+      window.addEventListener("error", function (ev) {
+        var banner = document.getElementById("errorBanner");
+        if (banner) {
+          banner.style.display = "block";
+          banner.textContent = "Error detectado: " + (ev.message || "desconocido");
         }
-      };
+      });
 
-      function sanitizeNumber(val, fallback, min, max) {
-        const n = Number(val);
-        if (!Number.isFinite(n)) return fallback;
-        return Math.min(max, Math.max(min, n));
+      // 1. Safe Storage & Date Utilities
+      var STORAGE_KEY = "boxcoach_pro_state_v4";
+
+      function todayISO(offsetDays) {
+        var d = new Date();
+        d.setHours(12, 0, 0, 0);
+        if (offsetDays) d.setDate(d.getDate() + offsetDays);
+        var y = d.getFullYear();
+        var m = String(d.getMonth() + 1).padStart(2, "0");
+        var day = String(d.getDate()).padStart(2, "0");
+        return y + "-" + m + "-" + day;
       }
 
-      function deepClone(obj) {
-        return JSON.parse(JSON.stringify(obj));
+      function parseLocalDate(isoStr) {
+        if (!isoStr || typeof isoStr !== "string") return new Date();
+        var parts = isoStr.split("-");
+        if (parts.length !== 3) return new Date();
+        var y = parseInt(parts[0], 10);
+        var m = parseInt(parts[1], 10) - 1;
+        var d = parseInt(parts[2], 10);
+        var dt = new Date(y, m, d, 12, 0, 0, 0);
+        return isNaN(dt.getTime()) ? new Date() : dt;
       }
 
-      function escapeHtml(str) {
-        return String(str)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#39;');
+      function sanitizeNum(val, fallback, min, max) {
+        var n = parseFloat(val);
+        if (isNaN(n) || !isFinite(n)) return fallback;
+        if (typeof min === "number" && n < min) n = min;
+        if (typeof max === "number" && n > max) n = max;
+        return n;
       }
 
-      /* ================= 2. WEB AUDIO SOUND ENGINE ================= */
-      const BoxingSoundEngine = {
-        ctx: null,
-        muted: false,
-        ensureCtx() {
-          if (!this.ctx) {
-            const AudioCtx = window.AudioContext || window.webkitAudioContext;
-            if (AudioCtx) this.ctx = new AudioCtx();
-          }
-          if (this.ctx && this.ctx.state === 'suspended') {
-            this.ctx.resume().catch(() => {});
-          }
-        },
-        vibrate(pattern) {
-          if (navigator.vibrate) {
-            try { navigator.vibrate(pattern); } catch (e) {}
-          }
-        },
-        playBell() {
-          this.vibrate([250, 80, 250]);
-          if (this.muted) return;
-          this.ensureCtx();
-          if (!this.ctx) return;
-          const now = this.ctx.currentTime;
-          const freqs = [520, 785, 1180, 1690];
-          freqs.forEach((f, idx) => {
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            osc.type = idx % 2 === 0 ? 'triangle' : 'sine';
-            osc.frequency.setValueAtTime(f, now);
-            gain.gain.setValueAtTime(0.28 / (idx + 1), now);
-            gain.gain.exponentialRampToValueAtTime(0.0008, now + 1.45);
-            osc.connect(gain);
-            gain.connect(this.ctx.destination);
-            osc.start(now);
-            osc.stop(now + 1.5);
-          });
-        },
-        playClapper() {
-          this.vibrate([90, 70, 90]);
-          if (this.muted) return;
-          this.ensureCtx();
-          if (!this.ctx) return;
-          const now = this.ctx.currentTime;
-          [0, 0.16].forEach((offset) => {
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            osc.type = 'square';
-            osc.frequency.setValueAtTime(920, now + offset);
-            osc.frequency.exponentialRampToValueAtTime(340, now + offset + 0.08);
-            gain.gain.setValueAtTime(0.25, now + offset);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.09);
-            osc.connect(gain);
-            gain.connect(this.ctx.destination);
-            osc.start(now + offset);
-            osc.stop(now + offset + 0.1);
-          });
-        },
-        playBurstCue(isBurst) {
-          this.vibrate(isBurst ? [120, 50, 120, 50, 120] : [140]);
-          if (this.muted) return;
-          this.ensureCtx();
-          if (!this.ctx) return;
-          const now = this.ctx.currentTime;
-          const count = isBurst ? 3 : 1;
-          for (let i = 0; i < count; i++) {
-            const t = now + i * 0.11;
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(isBurst ? 1320 : 660, t);
-            gain.gain.setValueAtTime(0.24, t);
-            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
-            osc.connect(gain);
-            gain.connect(this.ctx.destination);
-            osc.start(t);
-            osc.stop(t + 0.1);
-          }
-        },
-        playCountdownTick() {
-          if (this.muted) return;
-          this.ensureCtx();
-          if (!this.ctx) return;
-          const now = this.ctx.currentTime;
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(740, now);
-          gain.gain.setValueAtTime(0.14, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start(now);
-          osc.stop(now + 0.09);
-        }
-      };
-
-      /* ================= 3. PERSISTENT APP STATE ================= */
-      const STORAGE_KEY = 'boxcoach_pro_state_v3';
-      const todayIso = DateUtils.toISODate(new Date());
-      const defaultFightIso = DateUtils.addDays(todayIso, 56);
-
-      const DEFAULT_STATE = {
+      var DEFAULT_STATE = {
+        activeTab: "crono",
+        soundEnabled: true,
+        profileOpen: false,
         profile: {
-          name: 'Boxeador',
-          level: 'Amateur',
-          stance: 'Ortodoxa',
-          style: 'Mixto',
-          startDate: todayIso,
-          fightDate: defaultFightIso,
-          rmBench: 80,
-          rmShoulder: 55,
-          rmSquat: 110,
-          rmRow: 75,
-          rmHamstring: 60
+          name: "Boxeador",
+          level: "amateur",
+          style: "estilista",
+          height: 175,
+          weight: 70,
+          targetWeight: 69,
+          campStart: todayISO(-7),
+          fightDate: todayISO(42)
         },
-        gymSplit: '4d',
-        selectedWeek: 0,
-        selectedDayIdx: 0,
-        completedChecks: {},
-        viaLevel: 1
+        rm: {
+          bench: 80,
+          shoulder: 50,
+          squat: 100,
+          row: 75,
+          hamstring: 55
+        },
+        camp: {
+          freq: "4",
+          phase: "auto",
+          selectedDay: 0,
+          completed: {}
+        },
+        viasLevel: 1,
+        catalogFilter: "all",
+        catalogQuery: "",
+        autoCombo: false,
+        comboIndex: 0
       };
 
       function loadState() {
         try {
-          const raw = localStorage.getItem(STORAGE_KEY);
-          if (!raw) return deepClone(DEFAULT_STATE);
-          const parsed = JSON.parse(raw);
-          const merged = deepClone(DEFAULT_STATE);
-          if (parsed && typeof parsed === 'object') {
-            if (parsed.profile) Object.assign(merged.profile, parsed.profile);
-            if (parsed.gymSplit) merged.gymSplit = parsed.gymSplit;
-            merged.selectedWeek = sanitizeNumber(parsed.selectedWeek, 0, 0, 52);
-            merged.selectedDayIdx = sanitizeNumber(parsed.selectedDayIdx, 0, 0, 5);
-            if (parsed.completedChecks && typeof parsed.completedChecks === 'object') {
-              merged.completedChecks = parsed.completedChecks;
+          var raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return JSON.parse(JSON.stringify(DEFAULT_STATE));
+          var parsed = JSON.parse(raw);
+          var merged = JSON.parse(JSON.stringify(DEFAULT_STATE));
+          if (parsed && typeof parsed === "object") {
+            if (parsed.activeTab) merged.activeTab = parsed.activeTab;
+            if (typeof parsed.soundEnabled === "boolean") merged.soundEnabled = parsed.soundEnabled;
+            if (parsed.profile) {
+              merged.profile.name = String(parsed.profile.name || "Boxeador");
+              merged.profile.level = parsed.profile.level === "pro" ? "pro" : "amateur";
+              merged.profile.style = parsed.profile.style || "estilista";
+              merged.profile.height = sanitizeNum(parsed.profile.height, 175, 130, 220);
+              merged.profile.weight = sanitizeNum(parsed.profile.weight, 70, 40, 150);
+              merged.profile.targetWeight = sanitizeNum(parsed.profile.targetWeight, 69, 40, 150);
+              merged.profile.campStart = parsed.profile.campStart || todayISO(-7);
+              merged.profile.fightDate = parsed.profile.fightDate || todayISO(42);
             }
-            merged.viaLevel = sanitizeNumber(parsed.viaLevel, 1, 1, 3);
-          }
-          // Sanitize numeric 1RMs
-          merged.profile.rmBench = sanitizeNumber(merged.profile.rmBench, 80, 10, 300);
-          merged.profile.rmShoulder = sanitizeNumber(merged.profile.rmShoulder, 55, 5, 200);
-          merged.profile.rmSquat = sanitizeNumber(merged.profile.rmSquat, 110, 10, 400);
-          merged.profile.rmRow = sanitizeNumber(merged.profile.rmRow, 75, 10, 250);
-          merged.profile.rmHamstring = sanitizeNumber(merged.profile.rmHamstring, 60, 5, 200);
-
-          if (DateUtils.diffDays(merged.profile.startDate, merged.profile.fightDate) < 7) {
-            merged.profile.fightDate = DateUtils.addDays(merged.profile.startDate, 28);
+            if (parsed.rm) {
+              merged.rm.bench = sanitizeNum(parsed.rm.bench, 80, 10, 300);
+              merged.rm.shoulder = sanitizeNum(parsed.rm.shoulder, 50, 5, 200);
+              merged.rm.squat = sanitizeNum(parsed.rm.squat, 100, 15, 350);
+              merged.rm.row = sanitizeNum(parsed.rm.row, 75, 10, 250);
+              merged.rm.hamstring = sanitizeNum(parsed.rm.hamstring, 55, 10, 200);
+            }
+            if (parsed.camp) {
+              merged.camp.freq = parsed.camp.freq || "4";
+              merged.camp.phase = parsed.camp.phase || "auto";
+              merged.camp.selectedDay = sanitizeNum(parsed.camp.selectedDay, 0, 0, 6);
+              merged.camp.completed = parsed.camp.completed && typeof parsed.camp.completed === "object" ? parsed.camp.completed : {};
+            }
+            merged.viasLevel = sanitizeNum(parsed.viasLevel, 1, 1, 3);
+            merged.catalogFilter = parsed.catalogFilter || "all";
           }
           return merged;
         } catch (e) {
-          return deepClone(DEFAULT_STATE);
+          return JSON.parse(JSON.stringify(DEFAULT_STATE));
         }
       }
 
-      let AppState = loadState();
+      var state = loadState();
+
       function saveState() {
         try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(AppState));
-        } catch (e) {}
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {
+          // Ignore quota errors
+        }
       }
 
-      /* ================= 4. PURE ROUNDS TIMER ENGINE ================= */
-      const TIMER_PRESETS = [
-        { id: 'amateur', name: "Amateur 3×3'", desc: '3 rounds · 3:00 trabajo / 1:00 descanso', rounds: 3, work: 180, rest: 60, burst: 0, normal: 0 },
-        { id: 'pro', name: "Profesional 8×3'", desc: '8 rounds · 3:00 trabajo / 1:00 descanso', rounds: 8, work: 180, rest: 60, burst: 0, normal: 0 },
-        { id: 'speedbag', name: "Saco Velocidad 4×2'", desc: '4 rounds · 2:00 trabajo / 1:00 descanso', rounds: 4, work: 120, rest: 60, burst: 0, normal: 0 },
-        { id: 'fosfagenico', name: 'Fosfagénico 6×5"R / 25"N', desc: 'ATP-PC · 3 rounds con ráfagas explosivas de 5"', rounds: 3, work: 180, rest: 60, burst: 5, normal: 25 },
-        { id: 'glucolitico', name: 'Glucolítico 3×20"R / 40"N', desc: 'Tolerancia láctica · 3 rounds ráfagas 20"', rounds: 3, work: 180, rest: 60, burst: 20, normal: 40 },
-        { id: 'custom', name: 'Personalizado', desc: 'Configura rounds, tiempos e intervalos', rounds: 4, work: 180, rest: 60, burst: 0, normal: 0 }
-      ];
+      // 2. Web Audio API Synthesizer & Haptics
+      function BoxingSoundEngine() {
+        this.ctx = null;
+      }
 
-      const TimerState = {
-        presetId: 'amateur',
-        title: "Amateur 3×3'",
+      BoxingSoundEngine.prototype.ensureContext = function () {
+        if (!this.ctx) {
+          var AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) {
+            this.ctx = new AudioCtx();
+          }
+        }
+        if (this.ctx && this.ctx.state === "suspended") {
+          this.ctx.resume().catch(function () {});
+        }
+      };
+
+      BoxingSoundEngine.prototype.vibrate = function (pattern) {
+        if (navigator.vibrate) {
+          try {
+            navigator.vibrate(pattern);
+          } catch (e) {}
+        }
+      };
+
+      BoxingSoundEngine.prototype.playBell = function () {
+        this.vibrate([220, 80, 220]);
+        if (!state.soundEnabled) return;
+        this.ensureContext();
+        if (!this.ctx) return;
+        var now = this.ctx.currentTime;
+        var freqs = [587.33, 880, 1174.66, 1760];
+        for (var i = 0; i < freqs.length; i++) {
+          var osc = this.ctx.createOscillator();
+          var gain = this.ctx.createGain();
+          osc.type = i % 2 === 0 ? "sine" : "triangle";
+          osc.frequency.setValueAtTime(freqs[i], now);
+          gain.gain.setValueAtTime(0.24 / (i + 1), now);
+          gain.gain.exponentialRampToValueAtTime(0.0008, now + 1.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 1.4);
+        }
+      };
+
+      BoxingSoundEngine.prototype.playClapper = function () {
+        this.vibrate([90, 60, 90]);
+        if (!state.soundEnabled) return;
+        this.ensureContext();
+        if (!this.ctx) return;
+        var now = this.ctx.currentTime;
+        var offsets = [0, 0.16];
+        for (var i = 0; i < offsets.length; i++) {
+          var osc = this.ctx.createOscillator();
+          var gain = this.ctx.createGain();
+          osc.type = "square";
+          osc.frequency.setValueAtTime(980, now + offsets[i]);
+          gain.gain.setValueAtTime(0.22, now + offsets[i]);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + offsets[i] + 0.09);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + offsets[i]);
+          osc.stop(now + offsets[i] + 0.1);
+        }
+      };
+
+      BoxingSoundEngine.prototype.playBurstBeep = function (high) {
+        this.vibrate(high ? [120, 40, 120] : [80]);
+        if (!state.soundEnabled) return;
+        this.ensureContext();
+        if (!this.ctx) return;
+        var now = this.ctx.currentTime;
+        var osc = this.ctx.createOscillator();
+        var gain = this.ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(high ? 1320 : 660, now);
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.26);
+      };
+
+      var soundEngine = new BoxingSoundEngine();
+
+      // 3. Screen Wake Lock Manager
+      var wakeLockSentinel = null;
+
+      function updateWakeBadge(active) {
+        var el = document.getElementById("wakeBadge");
+        if (!el) return;
+        if (active) {
+          el.className = "badge wakelock";
+          el.textContent = "🔆 Pantalla Activa";
+        } else {
+          el.className = "badge";
+          el.textContent = "💤 Pantalla Normal";
+        }
+      }
+
+      function requestWakeLock() {
+        if ("wakeLock" in navigator) {
+          navigator.wakeLock.request("screen").then(function (sentinel) {
+            wakeLockSentinel = sentinel;
+            updateWakeBadge(true);
+            sentinel.addEventListener("release", function () {
+              wakeLockSentinel = null;
+              updateWakeBadge(false);
+            });
+          }).catch(function () {
+            updateWakeBadge(false);
+          });
+        }
+      }
+
+      function releaseWakeLock() {
+        if (wakeLockSentinel) {
+          wakeLockSentinel.release().catch(function () {});
+          wakeLockSentinel = null;
+        }
+        updateWakeBadge(false);
+      }
+
+      // 4. Combos Database by Style
+      var COMBOS_BY_STYLE = {
+        estilista: [
+          { seq: "1 - 1 - 2 · Paso atrás + 2", detail: "Doble jab para medir distancia, recto trasero y salida fuera de alcance." },
+          { seq: "1 - 2 - Pivote Izq (45°) - 3 - 2", detail: "Entrada recta, ángulo lateral rompiendo la línea central y remate cruzado." },
+          { seq: "1 (cuerpo) - 1 (cabeza) - 2 - 3", detail: "Finta al plexo para bajar la guardia y combinación rápida arriba." },
+          { seq: "1 - Paso lateral der - 2 - 1", detail: "Control con jab, desplazamiento lateral y salida jabbeando." }
+        ],
+        fajador: [
+          { seq: "1 - 2 - 3 (hígado) - 3 (cabeza) - 2", detail: "Presión hacia adelante cerrando salidas con doble hook izquierda." },
+          { seq: "Slip Izq - 5 (upper) - 4 - 3", detail: "Esquiva interior y descarga corta en media-corta distancia." },
+          { seq: "1 - 6 (upper der) - 3 - 2", detail: "Levanta la guardia rival con uppercut trasero y cruza hook." },
+          { seq: "2 (cuerpo) - 3 - 4 - Pivote corto", detail: "Ataque al tronco y giro corto de 90° para seguir presionando." }
+        ],
+        contragolpeador: [
+          { seq: "Paso atrás - 2 - 3 - 2", detail: "Haz fallar el jab rival por centímetros y responde al instante con recto." },
+          { seq: "Slip Der - 2 (cuerpo) - 3 (cabeza)", detail: "Desliza por fuera del jab rival y castiga costillas y mentón." },
+          { seq: "Roll bajo gancho - 4 - 5 - 2", detail: "Esquiva circular y contragolpe explosivo en 3 tiempos." },
+          { seq: "1 (medida) - Pull back - 2", detail: "Provoca respuesta con jab suave, retira cabeza y cruza recto." }
+        ],
+        switch: [
+          { seq: "1 - 2 - Cambio a Zurdo - 2 (zurdo) - 3", detail: "Cambio de guardia en movimiento para sorprender con izquierda recta." },
+          { seq: "1 - Pivote 90° a Zurdo - 3 - 2", detail: "Giro completo cambiando ángulo y perfil de ataque." },
+          { seq: "Jab zurdo - Directo izq - Paso a Ortodoxo - 3", detail: "Doble perfil ofensivo manteniendo el centro del ring." }
+        ]
+      };
+
+      // 5. High-Precision Rounds Timer Engine
+      var PRESETS = {
+        amateur: { label: "AMATEUR OFICIAL", rounds: 3, workSec: 180, restSec: 60, burstFast: 0, burstNorm: 0 },
+        pro: { label: "PROFESIONAL", rounds: 8, workSec: 180, restSec: 60, burstFast: 0, burstNorm: 0 },
+        speedbag: { label: "SACO VELOCIDAD", rounds: 4, workSec: 120, restSec: 60, burstFast: 0, burstNorm: 0 },
+        phosphagen: { label: "FOSFAGÉNICO (5\"R/25\"N)", rounds: 3, workSec: 180, restSec: 60, burstFast: 5, burstNorm: 25 },
+        glycolytic: { label: "GLUCOLÍTICO (20\"R/40\"N)", rounds: 3, workSec: 180, restSec: 60, burstFast: 20, burstNorm: 40 },
+        custom: { label: "PERSONALIZADO", rounds: 3, workSec: 180, restSec: 60, burstFast: 0, burstNorm: 0 }
+      };
+
+      var timer = {
+        presetKey: "amateur",
+        label: "AMATEUR OFICIAL",
         totalRounds: 3,
         workSec: 180,
         restSec: 60,
-        burstSec: 0,
-        normalSec: 0,
-        status: 'idle', // idle | prep | work | rest | done
+        burstFast: 0,
+        burstNorm: 0,
         currentRound: 1,
-        remainingSec: 180,
-        phaseTotalSec: 180,
-        intervalId: null,
+        phase: "READY", // READY | PREP | WORK | REST | DONE
+        running: false,
+        phaseEndMs: 0,
+        remainingMs: 180000,
+        phaseDurationMs: 180000,
+        lastWholeSec: -1,
         lastBurstState: null,
-        comboTickCounter: 0
+        clapperPlayedThisRound: false,
+        intervalId: null
       };
 
-      const COMBINATIONS = {
-        Ortodoxa: {
-          Estilista: [
-            '1 (Jab rápido) - 1 (Doble jab) - Paso atrás - 2 (Directo contra)',
-            '1 (Jab al cuerpo) - 2 (Directo cabeza) - Pivote corto 45° - 3 (Hook)',
-            'Finta de jab - 2 (Directo) - 3 (Gancho izq.) - Salida lateral derecha',
-            '1 - 2 - Rolling defensivo - 2 (Directo) - 3 (Hook izquierdo)'
-          ],
-          Fajador: [
-            'Paso adentro con 1 - 2 - 3 (Gancho hígado) - 4 (Volado derecho)',
-            '3 (Gancho izq. cuerpo) - 3 (Gancho izq. cabeza) - 2 (Directo)',
-            '6 (Uppercut der.) - 3 (Hook izq.) - 2 (Directo) - 3 (Hook)',
-            '1 - 2 - 5 (Uppercut izq.) - 2 (Directo) - Cierre de distancia'
-          ],
-          Mixto: [
-            '1 - 2 - 3 (Hook izq.) - 2 (Directo) - Pivote corto 45°',
-            '1 (Jab) - 6 (Uppercut der.) - 3 (Gancho izq.) - Paso lateral',
-            '1 - 1 - 2 - 3 (Gancho cuerpo) - 2 (Directo arriba)',
-            '1 (Jab) - Esquiva lateral - 2 (Directo) - 3 (Hook) - 2'
-          ]
-        },
-        Zurda: {
-          Estilista: [
-            '1 (Jab der.) - 1 (Doble jab) - Paso atrás - 2 (Directo zurdo)',
-            '1 (Jab cuerpo) - 2 (Directo zurdo) - Pivote 45° derecha - 3 (Hook der.)',
-            'Finta jab der. - 2 (Zurda recta) - 3 (Hook der.) - Salida lateral izq.',
-            '1 - 2 - Rolling - 2 (Zurda) - 3 (Gancho derecho)'
-          ],
-          Fajador: [
-            'Paso adentro 1 - 2 (Zurda) - 3 (Gancho der. cuerpo) - 4 (Volado izq.)',
-            '3 (Gancho der. cuerpo) - 3 (Gancho der. cabeza) - 2 (Directo zurdo)',
-            '6 (Uppercut izq.) - 3 (Hook der.) - 2 (Zurda) - 3 (Hook der.)',
-            '1 - 2 - 5 (Uppercut der.) - 2 (Directo zurdo) - Presión'
-          ],
-          Mixto: [
-            '1 - 2 (Zurda) - 3 (Hook der.) - 2 (Zurda) - Pivote 45°',
-            '1 (Jab der.) - 6 (Uppercut izq.) - 3 (Gancho der.) - Paso lateral',
-            '1 - 1 - 2 - 3 (Gancho der. cuerpo) - 2 (Zurda arriba)',
-            '1 (Jab) - Esquiva - 2 (Zurda) - 3 (Hook der.) - 2'
-          ]
+      function formatClock(ms) {
+        var totalSec = Math.max(0, Math.ceil(ms / 1000));
+        var mins = Math.floor(totalSec / 60);
+        var secs = totalSec % 60;
+        return String(mins).padStart(2, "0") + ":" + String(secs).padStart(2, "0");
+      }
+
+      function applyTimerConfig(cfg, presetKey) {
+        stopTimerInterval();
+        timer.running = false;
+        releaseWakeLock();
+        if (presetKey) timer.presetKey = presetKey;
+        timer.label = cfg.label || "SESIÓN BOXEO";
+        timer.totalRounds = Math.max(1, Math.min(15, parseInt(cfg.rounds, 10) || 3));
+        timer.workSec = Math.max(5, parseInt(cfg.workSec, 10) || 180);
+        timer.restSec = Math.max(5, parseInt(cfg.restSec, 10) || 60);
+        timer.burstFast = Math.max(0, parseInt(cfg.burstFast, 10) || 0);
+        timer.burstNorm = Math.max(0, parseInt(cfg.burstNorm, 10) || 0);
+        timer.currentRound = 1;
+        timer.phase = "READY";
+        timer.phaseDurationMs = timer.workSec * 1000;
+        timer.remainingMs = timer.phaseDurationMs;
+        timer.lastWholeSec = -1;
+        timer.lastBurstState = null;
+        timer.clapperPlayedThisRound = false;
+
+        // Sync custom inputs
+        var cR = document.getElementById("custRounds");
+        var cWM = document.getElementById("custWorkMin");
+        var cWS = document.getElementById("custWorkSec");
+        var cRS = document.getElementById("custRestSec");
+        var cBF = document.getElementById("custBurstFast");
+        var cBN = document.getElementById("custBurstNorm");
+        if (cR) cR.value = timer.totalRounds;
+        if (cWM) cWM.value = Math.floor(timer.workSec / 60);
+        if (cWS) cWS.value = timer.workSec % 60;
+        if (cRS) cRS.value = timer.restSec;
+        if (cBF) cBF.value = timer.burstFast;
+        if (cBN) cBN.value = timer.burstNorm;
+
+        // Highlight preset buttons
+        var presetBtns = document.querySelectorAll(".preset-btn");
+        for (var i = 0; i < presetBtns.length; i++) {
+          presetBtns[i].classList.toggle("active", presetBtns[i].getAttribute("data-preset") === timer.presetKey);
         }
-      };
-
-      function pickNewCombo() {
-        const stance = AppState.profile.stance || 'Ortodoxa';
-        const style = AppState.profile.style || 'Mixto';
-        const list = (COMBINATIONS[stance] && COMBINATIONS[stance][style]) || COMBINATIONS.Ortodoxa.Mixto;
-        const pick = list[Math.floor(Math.random() * list.length)];
-        document.getElementById('comboDisplay').textContent = pick;
-        document.getElementById('comboProfileTag').textContent = stance + ' · ' + style;
-      }
-
-      function formatMMSS(sec) {
-        const s = Math.max(0, Math.floor(sec));
-        const m = Math.floor(s / 60);
-        const r = s % 60;
-        return String(m).padStart(2, '0') + ':' + String(r).padStart(2, '0');
-      }
-
-      function loadTimerConfig(cfg) {
-        stopTimerLoop();
-        TimerState.title = cfg.title || 'Sesión de Boxeo';
-        TimerState.totalRounds = sanitizeNumber(cfg.rounds, 3, 1, 15);
-        TimerState.workSec = sanitizeNumber(cfg.work, 180, 10, 600);
-        TimerState.restSec = sanitizeNumber(cfg.rest, 60, 5, 300);
-        TimerState.burstSec = sanitizeNumber(cfg.burst, 0, 0, 120);
-        TimerState.normalSec = sanitizeNumber(cfg.normal, 0, 0, 180);
-        TimerState.status = 'idle';
-        TimerState.currentRound = 1;
-        TimerState.remainingSec = TimerState.workSec;
-        TimerState.phaseTotalSec = TimerState.workSec;
-        TimerState.lastBurstState = null;
-        TimerState.comboTickCounter = 0;
-
-        document.getElementById('timerSessionTitle').textContent = TimerState.title;
-        let meta = TimerState.totalRounds + ' Rounds × ' + formatMMSS(TimerState.workSec) + ' trabajo · ' + formatMMSS(TimerState.restSec) + ' descanso';
-        if (TimerState.burstSec > 0 && TimerState.normalSec > 0) {
-          meta += ' · Intervalos ' + TimerState.burstSec + '" Ráfaga / ' + TimerState.normalSec + '" Normal';
+        var customBox = document.getElementById("customTimerBox");
+        if (customBox) {
+          customBox.classList.toggle("open", timer.presetKey === "custom");
         }
-        document.getElementById('timerProtocolMeta').textContent = meta;
-        updateTimerUI();
+        renderTimerUI();
       }
 
-      function renderPresetChips() {
-        const grid = document.getElementById('presetGrid');
-        grid.innerHTML = TIMER_PRESETS.map((p) => {
-          const active = p.id === TimerState.presetId ? 'active' : '';
-          return '<button type="button" class="preset-chip ' + active + '" data-preset="' + p.id + '">' +
-            '<strong>' + escapeHtml(p.name) + '</strong>' +
-            '<small>' + escapeHtml(p.desc) + '</small>' +
-          '</button>';
-        }).join('');
-      }
-
-      function stopTimerLoop() {
-        if (TimerState.intervalId) {
-          clearInterval(TimerState.intervalId);
-          TimerState.intervalId = null;
+      function stopTimerInterval() {
+        if (timer.intervalId !== null) {
+          clearInterval(timer.intervalId);
+          timer.intervalId = null;
         }
       }
 
       function startTimer() {
-        BoxingSoundEngine.ensureCtx();
-        if (TimerState.intervalId) return;
-
-        if (TimerState.status === 'idle' || TimerState.status === 'done') {
-          TimerState.status = 'prep';
-          TimerState.currentRound = 1;
-          TimerState.remainingSec = 5;
-          TimerState.phaseTotalSec = 5;
-          TimerState.lastBurstState = null;
-          BoxingSoundEngine.playCountdownTick();
+        soundEngine.ensureContext();
+        if (timer.phase === "DONE") {
+          timer.currentRound = 1;
+          timer.phase = "READY";
         }
-        updateTimerUI();
-
-        TimerState.intervalId = setInterval(() => {
-          if (TimerState.remainingSec > 1) {
-            TimerState.remainingSec -= 1;
-
-            if (TimerState.status === 'prep') {
-              BoxingSoundEngine.playCountdownTick();
-            } else if (TimerState.status === 'work') {
-              if (TimerState.remainingSec === 10) {
-                BoxingSoundEngine.playClapper();
-              }
-              // Intra-round burst/normal cycle
-              if (TimerState.burstSec > 0 && TimerState.normalSec > 0) {
-                const elapsed = TimerState.workSec - TimerState.remainingSec;
-                const cycleLen = TimerState.burstSec + TimerState.normalSec;
-                const posInCycle = elapsed % cycleLen;
-                const isBurstNow = posInCycle < TimerState.burstSec;
-                if (TimerState.lastBurstState !== isBurstNow) {
-                  TimerState.lastBurstState = isBurstNow;
-                  BoxingSoundEngine.playBurstCue(isBurstNow);
-                }
-              }
-              // Auto combination call every 12 seconds
-              TimerState.comboTickCounter += 1;
-              if (document.getElementById('chkAutoCombo').checked && TimerState.comboTickCounter % 12 === 0) {
-                pickNewCombo();
-              }
-            }
-          } else {
-            // Transition phase
-            if (TimerState.status === 'prep') {
-              TimerState.status = 'work';
-              TimerState.remainingSec = TimerState.workSec;
-              TimerState.phaseTotalSec = TimerState.workSec;
-              TimerState.lastBurstState = TimerState.burstSec > 0 ? true : null;
-              BoxingSoundEngine.playBell();
-              if (TimerState.burstSec > 0) {
-                setTimeout(() => BoxingSoundEngine.playBurstCue(true), 350);
-              }
-            } else if (TimerState.status === 'work') {
-              BoxingSoundEngine.playBell();
-              if (TimerState.currentRound < TimerState.totalRounds) {
-                TimerState.status = 'rest';
-                TimerState.remainingSec = TimerState.restSec;
-                TimerState.phaseTotalSec = TimerState.restSec;
-                TimerState.lastBurstState = null;
-              } else {
-                TimerState.status = 'done';
-                TimerState.remainingSec = 0;
-                stopTimerLoop();
-              }
-            } else if (TimerState.status === 'rest') {
-              TimerState.currentRound += 1;
-              TimerState.status = 'work';
-              TimerState.remainingSec = TimerState.workSec;
-              TimerState.phaseTotalSec = TimerState.workSec;
-              TimerState.lastBurstState = TimerState.burstSec > 0 ? true : null;
-              BoxingSoundEngine.playBell();
-            }
-          }
-          updateTimerUI();
-        }, 1000);
+        if (timer.phase === "READY") {
+          timer.phase = "PREP";
+          timer.phaseDurationMs = 5000;
+          timer.remainingMs = 5000;
+          timer.clapperPlayedThisRound = false;
+          timer.lastBurstState = null;
+          soundEngine.playBurstBeep(false);
+        }
+        timer.phaseEndMs = Date.now() + timer.remainingMs;
+        timer.running = true;
+        requestWakeLock();
+        stopTimerInterval();
+        timer.intervalId = setInterval(tickTimer, 100);
+        renderTimerUI();
       }
 
       function pauseTimer() {
-        stopTimerLoop();
-        updateTimerUI();
+        if (!timer.running) return;
+        timer.remainingMs = Math.max(0, timer.phaseEndMs - Date.now());
+        timer.running = false;
+        stopTimerInterval();
+        releaseWakeLock();
+        renderTimerUI();
       }
 
-      function resetTimer() {
-        stopTimerLoop();
-        TimerState.status = 'idle';
-        TimerState.currentRound = 1;
-        TimerState.remainingSec = TimerState.workSec;
-        TimerState.phaseTotalSec = TimerState.workSec;
-        TimerState.lastBurstState = null;
-        TimerState.comboTickCounter = 0;
-        updateTimerUI();
-      }
-
-      function updateTimerUI() {
-        const phaseEl = document.getElementById('timerPhaseLabel');
-        const digitsEl = document.getElementById('timerDisplay');
-        const roundEl = document.getElementById('roundDisplay');
-        const cueEl = document.getElementById('intraCueDisplay');
-        const ringEl = document.getElementById('ringProgress');
-
-        digitsEl.textContent = formatMMSS(TimerState.remainingSec);
-        roundEl.textContent = 'Round ' + TimerState.currentRound + ' de ' + TimerState.totalRounds;
-
-        let strokeColor = '#ef4444';
-        let label = 'LISTO';
-        let cue = '';
-
-        if (TimerState.status === 'prep') {
-          label = 'PREPARACIÓN';
-          strokeColor = '#38bdf8';
-          cue = 'En guardia... ¡listos para salir!';
-        } else if (TimerState.status === 'work') {
-          if (TimerState.burstSec > 0 && TimerState.normalSec > 0) {
-            const elapsed = TimerState.workSec - TimerState.remainingSec;
-            const cycleLen = TimerState.burstSec + TimerState.normalSec;
-            const isBurst = (elapsed % cycleLen) < TimerState.burstSec;
-            if (isBurst) {
-              label = '⚡ RÁFAGA MÁXIMA';
-              strokeColor = '#f59e0b';
-              cue = '95-100% VELOCIDAD DE GOLPEO';
-            } else {
-              label = 'COMBATE · RITMO';
-              strokeColor = '#ef4444';
-              cue = 'Desplazamiento, jab y recuperación activa';
-            }
+      function advancePhase(autoStart) {
+        if (timer.phase === "PREP") {
+          timer.phase = "WORK";
+          timer.phaseDurationMs = timer.workSec * 1000;
+          timer.remainingMs = timer.phaseDurationMs;
+          timer.clapperPlayedThisRound = false;
+          timer.lastBurstState = null;
+          soundEngine.playBell();
+        } else if (timer.phase === "WORK") {
+          soundEngine.playBell();
+          if (timer.currentRound >= timer.totalRounds) {
+            timer.phase = "DONE";
+            timer.running = false;
+            timer.remainingMs = 0;
+            stopTimerInterval();
+            releaseWakeLock();
+            renderTimerUI();
+            showToast("🏁 ¡Entrenamiento completado!");
+            return;
           } else {
-            label = 'COMBATE · TRABAJO';
-            strokeColor = '#ef4444';
-            cue = TimerState.remainingSec <= 10 ? '¡ÚLTIMOS 10 SEGUNDOS! Cierra fuerte' : 'Mantén guardia alta y exhalación';
+            timer.phase = "REST";
+            timer.phaseDurationMs = timer.restSec * 1000;
+            timer.remainingMs = timer.phaseDurationMs;
+            if (state.autoCombo) nextCombo();
           }
-        } else if (TimerState.status === 'rest') {
-          label = 'DESCANSO EN ESQUINA';
-          strokeColor = '#10b981';
-          cue = 'Respira profundo, hidrata y visualiza';
-        } else if (TimerState.status === 'done') {
-          label = '¡SESIÓN COMPLETADA!';
-          strokeColor = '#10b981';
-          cue = 'Excelente trabajo en el ring';
+        } else if (timer.phase === "REST") {
+          timer.currentRound += 1;
+          timer.phase = "WORK";
+          timer.phaseDurationMs = timer.workSec * 1000;
+          timer.remainingMs = timer.phaseDurationMs;
+          timer.clapperPlayedThisRound = false;
+          timer.lastBurstState = null;
+          soundEngine.playBell();
+        } else if (timer.phase === "READY") {
+          timer.phase = "WORK";
+          timer.phaseDurationMs = timer.workSec * 1000;
+          timer.remainingMs = timer.phaseDurationMs;
+          soundEngine.playBell();
         }
 
-        phaseEl.textContent = label;
-        phaseEl.style.color = strokeColor;
-        ringEl.style.stroke = strokeColor;
-        cueEl.textContent = cue;
-
-        const circumference = 628.32;
-        const ratio = TimerState.phaseTotalSec > 0 ? (TimerState.remainingSec / TimerState.phaseTotalSec) : 1;
-        const offset = circumference * (1 - Math.max(0, Math.min(1, ratio)));
-        ringEl.setAttribute('stroke-dashoffset', offset.toFixed(2));
-
-        const running = Boolean(TimerState.intervalId);
-        document.getElementById('btnTimerStart').disabled = running;
-        document.getElementById('btnTimerPause').disabled = !running;
+        if (autoStart && timer.running) {
+          timer.phaseEndMs = Date.now() + timer.remainingMs;
+        }
+        renderTimerUI();
       }
 
-      /* ================= 5. FIGHT CAMP PLANNER (AM GYM + PM BOXING) ================= */
-      const DAY_NAMES = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+      function tickTimer() {
+        if (!timer.running) return;
+        var now = Date.now();
+        var rem = timer.phaseEndMs - now;
 
-      function calcKg(oneRm, pct) {
-        const raw = oneRm * pct;
-        return Math.max(2.5, Math.round(raw / 2.5) * 2.5);
+        if (rem <= 0) {
+          advancePhase(true);
+          return;
+        }
+
+        timer.remainingMs = rem;
+        var wholeSec = Math.ceil(rem / 1000);
+
+        if (wholeSec !== timer.lastWholeSec) {
+          timer.lastWholeSec = wholeSec;
+          if (timer.phase === "PREP" && wholeSec <= 3 && wholeSec >= 1) {
+            soundEngine.playBurstBeep(false);
+          }
+          if (timer.phase === "WORK") {
+            // 10-second warning clapper
+            if (wholeSec === 10 && !timer.clapperPlayedThisRound && timer.workSec > 15) {
+              timer.clapperPlayedThisRound = true;
+              soundEngine.playClapper();
+            }
+            // Intra-round burst check
+            if (timer.burstFast > 0 && timer.burstNorm > 0) {
+              var elapsedSec = Math.floor((timer.phaseDurationMs - rem) / 1000);
+              var cycle = timer.burstFast + timer.burstNorm;
+              var inCycle = elapsedSec % cycle;
+              var isFast = inCycle < timer.burstFast;
+              if (timer.lastBurstState !== null && timer.lastBurstState !== isFast) {
+                soundEngine.playBurstBeep(isFast);
+              }
+              timer.lastBurstState = isFast;
+            }
+          }
+        }
+        renderTimerUI();
       }
 
-      function getMesocycleForWeek(weekIdx, totalWeeks) {
-        const progress = totalWeeks <= 1 ? 1 : weekIdx / (totalWeeks - 1);
-        if (weekIdx === totalWeeks - 1) {
-          return {
-            name: 'Realización (Fight Week)',
-            badgeClass: 'badge-green',
-            pct: 0.25,
-            scheme: '3 series × 6-8 reps · 60" descanso · Velocidad máxima sin fatiga',
-            nutrition: 'Carga controlada de carbohidratos complejos, hidratación con electrolitos y cero déficit extremo para llegar explosivo al pesaje y combate.'
-          };
+      function renderTimerUI() {
+        var badge = document.getElementById("timerPhaseBadge");
+        var clock = document.getElementById("timerClock");
+        var roundTxt = document.getElementById("timerRoundText");
+        var subTxt = document.getElementById("timerSubText");
+        var ring = document.getElementById("timerRing");
+        var toggleBtn = document.getElementById("btnTimerToggle");
+
+        if (!badge || !clock || !ring || !toggleBtn) return;
+
+        var isBurstNow = false;
+        if (timer.phase === "WORK" && timer.burstFast > 0 && timer.burstNorm > 0) {
+          var elapsedSec = Math.max(0, Math.floor((timer.phaseDurationMs - timer.remainingMs) / 1000));
+          var cycle = timer.burstFast + timer.burstNorm;
+          isBurstNow = (elapsedSec % cycle) < timer.burstFast;
         }
-        if (progress < 0.4) {
-          return {
-            name: 'Acumulación Base (Fuerza-Resistencia)',
-            badgeClass: 'badge-sky',
-            pct: 0.60,
-            scheme: '3 series × 12-15 reps · 60" descanso · Base muscular y resistencia local',
-            nutrition: '3 a 5 ingestas diarias: carbohidratos entre AM y PM (separación 5-6 h) + proteína suficiente para reparar fibras sin subir de categoría.'
-          };
+
+        if (timer.phase === "READY") {
+          badge.className = "phase-pill phase-ready";
+          badge.textContent = "LISTO · " + timer.label;
+          ring.style.stroke = "#3b82f6";
+          subTxt.textContent = "5s preparación al iniciar";
+        } else if (timer.phase === "PREP") {
+          badge.className = "phase-pill phase-prep";
+          badge.textContent = "⏳ PREPARACIÓN · ¡EN GUARDIA!";
+          ring.style.stroke = "#f59e0b";
+          subTxt.textContent = "Prepárate para la campana";
+        } else if (timer.phase === "WORK") {
+          if (isBurstNow) {
+            badge.className = "phase-pill phase-burst";
+            badge.textContent = "⚡ COMBATE · ¡RÁFAGA MÁXIMA!";
+            ring.style.stroke = "#f59e0b";
+            subTxt.textContent = "Máxima velocidad de golpeo (" + timer.burstFast + "s)";
+          } else {
+            badge.className = "phase-pill phase-work";
+            badge.textContent = "🥊 COMBATE · " + timer.label;
+            ring.style.stroke = "#ef4444";
+            subTxt.textContent = timer.burstFast > 0 ? "Ritmo técnico fluido (" + timer.burstNorm + "s)" : "Aviso 10\" antes del cierre";
+          }
+        } else if (timer.phase === "REST") {
+          badge.className = "phase-pill phase-rest";
+          badge.textContent = "💧 DESCANSO ENTRE ASALTOS";
+          ring.style.stroke = "#10b981";
+          subTxt.textContent = "Respira profundo · Hidratación";
+        } else {
+          badge.className = "phase-pill phase-done";
+          badge.textContent = "🏁 SESIÓN COMPLETADA";
+          ring.style.stroke = "#8b5cf6";
+          subTxt.textContent = "Buen trabajo en el ring";
         }
-        if (progress < 0.75) {
-          return {
-            name: 'Acumulación Avanzada (Fuerza Máxima Neural)',
-            badgeClass: 'badge-purple',
-            pct: 0.87,
-            scheme: '5 series × 2-3 reps · 3-4 min descanso · Intención explosiva SIN hipertrofia',
-            nutrition: 'Aporte óptimo de creatina/fosfocreatina y glucógeno muscular para sostener reclutamiento neural al 85-90% RM sin ganar masa innecesaria.'
-          };
+
+        clock.textContent = formatClock(timer.remainingMs);
+        roundTxt.textContent = "Asalto " + timer.currentRound + " / " + timer.totalRounds;
+
+        var circumference = 615.75;
+        var ratio = timer.phaseDurationMs > 0 ? Math.max(0, Math.min(1, timer.remainingMs / timer.phaseDurationMs)) : 0;
+        if (timer.phase === "READY") ratio = 1;
+        ring.style.strokeDashoffset = String(circumference * (1 - ratio));
+
+        if (timer.running) {
+          toggleBtn.textContent = "⏸ Pausar";
+          toggleBtn.classList.add("paused-state");
+        } else {
+          toggleBtn.textContent = timer.phase === "READY" || timer.phase === "DONE" ? "▶ Iniciar" : "▶ Reanudar";
+          toggleBtn.classList.remove("paused-state");
         }
-        return {
-          name: 'Transformación (Potencia Balística)',
-          badgeClass: 'badge-amber',
+      }
+
+      // 6. Combos Renderer
+      var comboAutoInterval = null;
+
+      function renderCombo() {
+        var styleKey = state.profile.style || "estilista";
+        var list = COMBOS_BY_STYLE[styleKey] || COMBOS_BY_STYLE.estilista;
+        var idx = Math.abs(state.comboIndex) % list.length;
+        var item = list[idx];
+        var styleNames = {
+          estilista: "Estilista",
+          fajador: "Fajador",
+          contragolpeador: "Contragolpeador",
+          switch: "Switch"
+        };
+        var lbl = document.getElementById("comboStyleLabel");
+        var seq = document.getElementById("comboSequence");
+        var det = document.getElementById("comboDetail");
+        var autoBtn = document.getElementById("btnAutoCombo");
+        if (lbl) lbl.textContent = styleNames[styleKey] || "Estilista";
+        if (seq) seq.textContent = item.seq;
+        if (det) det.textContent = item.detail;
+        if (autoBtn) {
+          autoBtn.textContent = state.autoCombo ? "🔄 Auto: ON" : "🔄 Auto: OFF";
+          autoBtn.classList.toggle("active", state.autoCombo);
+        }
+      }
+
+      function nextCombo() {
+        state.comboIndex = (state.comboIndex + 1) % 20;
+        renderCombo();
+      }
+
+      function syncAutoComboTimer() {
+        if (comboAutoInterval) {
+          clearInterval(comboAutoInterval);
+          comboAutoInterval = null;
+        }
+        if (state.autoCombo) {
+          comboAutoInterval = setInterval(nextCombo, 15000);
+        }
+      }
+
+      // 7. Campamento (Periodization + 5 Gym Frequencies + Unified AM/PM + Sparring)
+      var MESOCYCLES = {
+        base: {
+          name: "1. Acumulación Base (Resistencia Muscular y Capacidad Enzimática)",
+          pct: 0.60,
+          setsReps: "3×12 rep",
+          rest: "60\" desc",
+          summary: "Carga: 60% 1RM · 3×12 rep · 60\" descanso · Base estructural y aeróbica"
+        },
+        max: {
+          name: "2. Fuerza Máxima Neural (Sin Hipertrofia — Mantener Categoría)",
+          pct: 0.88,
+          setsReps: "5×2 rep explosivas",
+          rest: "3–4' desc",
+          summary: "Carga: 88% 1RM · 5×2 rep · 3–4' pausa completa · Potencia neural sin subir de peso"
+        },
+        power: {
+          name: "3. Transformación Balística (Fuerza-Velocidad Específica)",
           pct: 0.35,
-          scheme: '4 series × 6-8 reps · 90" descanso · Máxima velocidad de ejecución',
-          nutrition: 'Prioriza carbohidratos de rápida asimilación post-pesas AM y electrolitos antes del boxeo PM para sostener ráfagas anaeróbicas.'
-        };
+          setsReps: "4×8 rep máx. velocidad",
+          rest: "90\" desc",
+          summary: "Carga: 35% 1RM · 4×8 rep balísticas · 90\" descanso · Transferencia directa al golpeo"
+        },
+        taper: {
+          name: "4. Realización / Fight Week (Descarga y Chispa Neuromuscular)",
+          pct: 0.25,
+          setsReps: "3×6 rep rápidas",
+          rest: "90\" desc",
+          summary: "Carga: 25% 1RM · 3×6 rep · Sin fatiga residual · Frescura total para el pesaje y combate"
+        }
+      };
+
+      function getActiveMesocycle() {
+        if (state.camp.phase && state.camp.phase !== "auto" && MESOCYCLES[state.camp.phase]) {
+          return MESOCYCLES[state.camp.phase];
+        }
+        var now = new Date();
+        now.setHours(12, 0, 0, 0);
+        var fight = parseLocalDate(state.profile.fightDate);
+        var diffDays = Math.round((fight.getTime() - now.getTime()) / 86400000);
+        if (diffDays <= 10) return MESOCYCLES.taper;
+        if (diffDays <= 24) return MESOCYCLES.power;
+        if (diffDays <= 42) return MESOCYCLES.max;
+        return MESOCYCLES.base;
       }
 
-      function getGymSessionForDay(split, dayIdx, meso) {
-        const rm = AppState.profile;
-        const benchKg = calcKg(rm.rmBench, meso.pct);
-        const shoulderKg = calcKg(rm.rmShoulder, meso.pct);
-        const squatKg = calcKg(rm.rmSquat, meso.pct);
-        const rowKg = calcKg(rm.rmRow, meso.pct);
-        const hamKg = calcKg(rm.rmHamstring, meso.pct);
-        const compKg = (base) => calcKg(base, 0.30);
-
-        const blocks = {
-          empuje: {
-            title: 'Empuje: Pecho, Hombros y Tríceps',
-            exercises: [
-              { name: 'Press banca plano con mancuernas/barra', load: benchKg + ' kg (' + Math.round(meso.pct * 100) + '% RM)' },
-              { name: 'Press de hombros militar (core firme)', load: shoulderKg + ' kg (' + Math.round(meso.pct * 100) + '% RM)' },
-              { name: 'Flexiones en TRX con elevación de cadera', load: '3×12-15 reps' },
-              { name: 'Extensión / patada de tríceps explosiva', load: '3×15 reps' }
-            ],
-            transfer: '45" de golpes rectos al aire con mancuernas ligeras (2 kg) al 95-100% velocidad.'
-          },
-          pierna: {
-            title: 'Tren Inferior: Piernas, Glúteos y Cadera',
-            exercises: [
-              { name: 'Sentadillas con barra o mancuernas', load: squatKg + ' kg (' + Math.round(meso.pct * 100) + '% RM)' },
-              { name: 'Curl de isquiotibiales / cinturón ruso', load: hamKg + ' kg (' + Math.round(meso.pct * 100) + '% RM)' },
-              { name: 'Zancadas unilaterales + Salto vertical pliométrico', load: '3×10/pierna + 6 saltos' },
-              { name: 'Compensatorio cadera (abducción/aducción/glúteo)', load: compKg(rm.rmSquat) + ' kg (30% RM)' }
-            ],
-            transfer: '60" de desplazamientos explosivos con pivote corto (45°) y doble jab.'
-          },
-          tiron: {
-            title: 'Tirón: Espalda, Bíceps y Compensatorio Cuello',
-            exercises: [
-              { name: 'Dominadas de dorsal agarre supino/neutro', load: '4×8-12 reps' },
-              { name: 'Remo Gironda en polea cerrada', load: rowKg + ' kg (' + Math.round(meso.pct * 100) + '% RM)' },
-              { name: 'Remo unilateral + Curl bíceps ganchos/uppers', load: '3×12 reps c/u' },
-              { name: 'Compensatorio de cuello (flexión/extensión/lateral)', load: '3×15 reps (30% RM)' }
-            ],
-            transfer: '45" de sombra explosiva enfocada en ganchos al cuerpo y recogida rápida de guardia.'
-          },
-          core: {
-            title: 'Core Integral (4 Pilares) + Estabilidad',
-            exercises: [
-              { name: 'Fuerza: Elevación de piernas colgado en barra', load: '3×12 reps' },
-              { name: 'Explosividad: Elevaciones en "V" con disco', load: '3×12 reps' },
-              { name: 'Rotación: Giros rusos con balón medicinal/disco', load: '3×20 (10/lado)' },
-              { name: 'Estabilidad: Plancha frontal y lateral isométrica', load: '3×45-60 seg' }
-            ],
-            transfer: '60" de boxeo de sombra a máxima velocidad encadenando cadera-tronco-puño.'
-          },
-          superior: {
-            title: 'Tren Superior Completo (Empuje + Tirón)',
-            exercises: [
-              { name: 'Press banca plano + Remo Gironda en polea', load: benchKg + ' kg / ' + rowKg + ' kg' },
-              { name: 'Press de hombros + Dominadas supinas', load: shoulderKg + ' kg / 3×10' },
-              { name: 'Patada de tríceps + Curl de bíceps', load: '3×12-15 reps' }
-            ],
-            transfer: '45" de combinaciones rectas y ganchos al 95-100% velocidad post-bloque.'
-          },
-          inferior_core: {
-            title: 'Tren Inferior + Core Rotacional y Cuello',
-            exercises: [
-              { name: 'Sentadilla + Isquiotibial', load: squatKg + ' kg / ' + hamKg + ' kg' },
-              { name: 'Salto pliométrico + Zancadas', load: '3×6 saltos + 10/pierna' },
-              { name: 'Giros rusos con disco + Plancha + Cuello', load: '3×20 + 45" + 3×15' }
-            ],
-            transfer: '60" de sombra explosiva con cambios de ángulo y salida lateral.'
-          },
-          activacion_viernes: {
-            title: 'Activación Neuromuscular Pre-Sparring (Sin Fatiga)',
-            exercises: [
-              { name: 'Press banca explosivo ligero (25% RM)', load: calcKg(rm.rmBench, 0.25) + ' kg (3×6 reps)' },
-              { name: 'Sentadilla con salto suave (25% RM)', load: calcKg(rm.rmSquat, 0.25) + ' kg (3×5 reps)' },
-              { name: 'Movilidad escapular y core anti-rotación', load: '2×30 seg' }
-            ],
-            transfer: '30" de sombra suelta de velocidad para activar sistema nervioso antes del sparring PM.'
-          }
-        };
-
-        if (dayIdx === 5) {
-          return {
-            restDay: true,
-            title: 'Descanso Activo / Movilidad Articular',
-            note: 'Sábado sin pesas: 15-20 min de caminata, movilidad articular y rodillo de espuma (foam roller).'
-          };
-        }
-
-        if (split === '4d') {
-          if (dayIdx === 0) return blocks.pierna;
-          if (dayIdx === 1) return blocks.empuje;
-          if (dayIdx === 2) return blocks.tiron;
-          if (dayIdx === 3) return blocks.core;
-          return {
-            restDay: true,
-            title: 'Sin Pesas AM — Día Exclusivo de Sparring PM',
-            note: 'Mañana libre de cargas para garantizar frescura neuromuscular total en el sparring de la tarde.'
-          };
-        }
-
-        if (split === '3d_lmj') {
-          if (dayIdx === 0) return blocks.empuje;
-          if (dayIdx === 1) return blocks.pierna;
-          if (dayIdx === 2) return {
-            restDay: true,
-            title: 'Sin Pesas AM — Recuperación y Soltura',
-            note: 'Día intermedio sin gimnasio para asimilar cargas y llegar fuerte al jueves y sparring del viernes.'
-          };
-          if (dayIdx === 3) return blocks.tiron;
-          return {
-            restDay: true,
-            title: 'Sin Pesas AM — Día Exclusivo de Sparring PM',
-            note: 'Viernes reservado 100% al sparring técnico-táctico de la tarde.'
-          };
-        }
-
-        if (split === '3d_lxv') {
-          if (dayIdx === 0) return blocks.superior;
-          if (dayIdx === 2) return blocks.inferior_core;
-          if (dayIdx === 4) return blocks.activacion_viernes;
-          return {
-            restDay: true,
-            title: 'Sin Pesas AM — Enfoque Técnico-Táctico PM',
-            note: 'Mañana de descanso muscular y movilidad.'
-          };
-        }
-
-        if (split === '2d_lj') {
-          if (dayIdx === 0) return blocks.superior;
-          if (dayIdx === 3) return blocks.inferior_core;
-          if (dayIdx === 4) return {
-            restDay: true,
-            title: 'Sin Pesas AM — Día Exclusivo de Sparring PM',
-            note: 'Viernes libre de pesas para máximo rendimiento en el ring.'
-          };
-          return {
-            restDay: true,
-            title: 'Sin Pesas AM — Recuperación Activa',
-            note: 'Estiramientos dinámicos y trabajo técnico por la tarde.'
-          };
-        }
-
-        // 5d_lv
-        if (dayIdx === 0) return blocks.empuje;
-        if (dayIdx === 1) return blocks.pierna;
-        if (dayIdx === 2) return blocks.tiron;
-        if (dayIdx === 3) return blocks.core;
-        return blocks.activacion_viernes;
+      function calcKg(rmKey, pct, fallbackFixed) {
+        if (!rmKey || !state.rm[rmKey]) return fallbackFixed || "Peso corporal";
+        var kg = Math.round((state.rm[rmKey] * pct) / 2.5) * 2.5;
+        return Math.max(5, kg) + " kg (" + Math.round(pct * 100) + "% RM)";
       }
 
-      function getBoxingSessionForDay(dayIdx, meso) {
-        const isPro = AppState.profile.level === 'Profesional';
-        const sparRounds = isPro ? 6 : 4;
-        const sessions = [
-          {
-            title: "Lunes PM: Técnica de Jab, Guardia y Saco 4×3'",
-            focus: 'Control de distancia, doble jab, pivote corto 45° y exhalación en cada impacto.',
-            rounds: 4, work: 180, rest: 60, burst: 0, normal: 0, isSparring: false
-          },
-          {
-            title: 'Martes PM: Potencia Fosfagénica 6×5"R / 25"N',
-            focus: 'Ráfagas explosivas de 5 seg al 95-100% velocidad en saco pesado + 25 seg desplazamiento.',
-            rounds: 3, work: 180, rest: 60, burst: 5, normal: 25, isSparring: false
-          },
-          {
-            title: 'Miércoles PM: Escuela de Combate y Defensa',
-            focus: 'Bloqueos, rolling, contragolpe inmediato y trabajo de manoplas/sombra dirigida.',
-            rounds: 4, work: 180, rest: 60, burst: 0, normal: 0, isSparring: false
-          },
-          {
-            title: 'Jueves PM: Tolerancia Glucolítica 3×20"R / 40"N',
-            focus: 'Ráfagas sostenidas de 20 seg de alta frecuencia + 40 seg ritmo medio técnico.',
-            rounds: 3, work: 180, rest: 60, burst: 20, normal: 40, isSparring: false
-          },
-          {
-            title: "Viernes PM: Sparring Técnico-Táctico " + sparRounds + "×3'",
-            focus: 'Aplicación real en ring con compañero: ritmo de pelea, defensa y control del centro.',
-            rounds: sparRounds, work: 180, rest: 60, burst: 0, normal: 0, isSparring: true
-          },
-          {
-            title: "Sábado PM: Saco de Velocidad y Cuerda 4×2'",
-            focus: 'Coordinación ojo-mano, resistencia de hombros y soltura aeróbica regenerativa.',
-            rounds: 4, work: 120, rest: 60, burst: 0, normal: 0, isSparring: false
-          }
+      var DAY_NAMES = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
+      var DAY_FULL = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+
+      function getCampDayPlan(dayIdx) {
+        var meso = getActiveMesocycle();
+        var freq = state.camp.freq || "4";
+
+        // Define AM Gym plans by frequency
+        var amPlans = {
+          "4": [
+            { title: "Empuje: Pecho, Hombros y Tríceps", exercises: [
+              { name: "Press Banca Plano Explosivo", load: calcKg("bench", meso.pct) },
+              { name: "Press Militar de Pie", load: calcKg("shoulder", meso.pct) },
+              { name: "Landmine Press Unilateral (cadena cinética)", load: calcKg("shoulder", meso.pct * 0.7) },
+              { name: "Fondos en Paralelas / Extensión Tríceps", load: "Peso corporal / moderado" }
+            ]},
+            { title: "Tren Inferior: Piernas, Cadera y Glúteos", exercises: [
+              { name: "Sentadilla Trasera / Frontal", load: calcKg("squat", meso.pct) },
+              { name: "Curl Femoral / Peso Muerto Rumano", load: calcKg("hamstring", meso.pct) },
+              { name: "Zancadas Explosivas Alternas", load: calcKg("squat", meso.pct * 0.45) },
+              { name: "Elevación de Talones (juego de pies)", load: "3×20 rep rápidas" }
+            ]},
+            { title: "Tirón: Espalda, Posterior y Bíceps", exercises: [
+              { name: "Remo en Polea Baja / Barra", load: calcKg("row", meso.pct) },
+              { name: "Dominadas / Jalón al Pecho", load: calcKg("row", meso.pct * 0.9) },
+              { name: "Face Pull (salud manguito rotador)", load: "3×15 rep controladas" },
+              { name: "Curl Bíceps Alterno (guardia)", load: "3×10 rep" }
+            ]},
+            { title: "Core 4 Pilares, Cuello y Potencia Rotacional", exercises: [
+              { name: "Giros Rusos con Disco (rotación de golpeo)", load: "3×20 rep" },
+              { name: "Elevaciones de Piernas Colgado", load: "3×12 rep" },
+              { name: "Plancha Isométrica Anti-Rotación (Pallof)", load: "3×35\" por lado" },
+              { name: "Isométricos de Cuello (4 direcciones)", load: "3×20\" suave" }
+            ]},
+            null, // Friday AM free for PM Sparring!
+            { title: "Carrera Aeróbica Continua / Recuperación Activa", exercises: [
+              { name: "Trote suave zona aeróbica (135–150 lpm)", load: "30–40 min" },
+              { name: "Movilidad articular y estiramiento global", load: "15 min" }
+            ]},
+            null
+          ],
+          "3_grouped": [
+            { title: "Día 1 Agrupado: Empuje + Core Anterior", exercises: [
+              { name: "Press Banca Plano", load: calcKg("bench", meso.pct) },
+              { name: "Press Militar Hombro", load: calcKg("shoulder", meso.pct) },
+              { name: "Elevaciones en V con Disco", load: "3×15 rep" }
+            ]},
+            { title: "Día 2 Agrupado: Piernas + Pliometría", exercises: [
+              { name: "Sentadilla", load: calcKg("squat", meso.pct) },
+              { name: "Isquiotibial en Máquina / Rumano", load: calcKg("hamstring", meso.pct) },
+              { name: "Saltos al Cajón / Sentadilla con Salto", load: "3×6 rep explosivas" }
+            ]},
+            null,
+            { title: "Día 3 Agrupado: Tirón + Core Rotacional y Cuello", exercises: [
+              { name: "Remo Polea", load: calcKg("row", meso.pct) },
+              { name: "Dominadas / Jalón", load: calcKg("row", meso.pct * 0.9) },
+              { name: "Giros Rusos + Isométricos de Cuello", load: "3×20 rep + 20\"" }
+            ]},
+            null,
+            { title: "Carrera Aeróbica / Cuerda", exercises: [
+              { name: "Salto de cuerda ritmo variado + trote suave", load: "30 min" }
+            ]},
+            null
+          ],
+          "3_alt": [
+            { title: "Tren Superior Completo (Empuje + Tirón)", exercises: [
+              { name: "Press Banca", load: calcKg("bench", meso.pct) },
+              { name: "Remo Polea", load: calcKg("row", meso.pct) },
+              { name: "Press Hombro", load: calcKg("shoulder", meso.pct) }
+            ]},
+            null,
+            { title: "Tren Inferior Completo + Core 4 Pilares", exercises: [
+              { name: "Sentadilla", load: calcKg("squat", meso.pct) },
+              { name: "Isquiotibial", load: calcKg("hamstring", meso.pct) },
+              { name: "Plancha + Giros Rusos", load: "3×40\" + 20 rep" }
+            ]},
+            null,
+            { title: "Activación Neuromuscular Pre-Sparring (Ligera)", exercises: [
+              { name: "Press Banca Velocidad (sin fatiga)", load: calcKg("bench", 0.25) },
+              { name: "Sentadilla Salto Ligera", load: calcKg("squat", 0.25) },
+              { name: "Movilidad de cadera y hombros", load: "10 min" }
+            ]},
+            null,
+            null
+          ],
+          "2": [
+            { title: "Día 1: Tren Superior Completo", exercises: [
+              { name: "Press Banca", load: calcKg("bench", meso.pct) },
+              { name: "Remo Polea", load: calcKg("row", meso.pct) },
+              { name: "Press Hombro", load: calcKg("shoulder", meso.pct) }
+            ]},
+            null,
+            null,
+            { title: "Día 2: Tren Inferior + Core y Cuello", exercises: [
+              { name: "Sentadilla", load: calcKg("squat", meso.pct) },
+              { name: "Isquiotibial", load: calcKg("hamstring", meso.pct) },
+              { name: "Core Rotacional + Cuello", load: "3×20 rep" }
+            ]},
+            null,
+            null,
+            null
+          ],
+          "5": [
+            { title: "Pecho + Tríceps", exercises: [
+              { name: "Press Banca", load: calcKg("bench", meso.pct) },
+              { name: "Press Inclinado Mancuernas", load: calcKg("bench", meso.pct * 0.75) },
+              { name: "Fondos / Tríceps Polea", load: "3×12 rep" }
+            ]},
+            { title: "Piernas + Glúteos", exercises: [
+              { name: "Sentadilla", load: calcKg("squat", meso.pct) },
+              { name: "Isquiotibial", load: calcKg("hamstring", meso.pct) },
+              { name: "Zancadas", load: calcKg("squat", meso.pct * 0.45) }
+            ]},
+            { title: "Espalda + Bíceps", exercises: [
+              { name: "Remo Polea", load: calcKg("row", meso.pct) },
+              { name: "Jalón al Pecho", load: calcKg("row", meso.pct * 0.9) },
+              { name: "Face Pull + Curl", load: "3×15 rep" }
+            ]},
+            { title: "Hombros + Core + Cuello", exercises: [
+              { name: "Press Hombro", load: calcKg("shoulder", meso.pct) },
+              { name: "Elevaciones Laterales (resistencia guardia)", load: "3×15 rep" },
+              { name: "Core 4 Pilares + Cuello", load: "3 series" }
+            ]},
+            { title: "Activación Explosiva Pre-Sparring (25% RM)", exercises: [
+              { name: "Press Banca Balístico Ligero", load: calcKg("bench", 0.25) },
+              { name: "Remo Explosivo Ligero", load: calcKg("row", 0.25) }
+            ]},
+            null,
+            null
+          ]
+        };
+
+        var pmPlans = [
+          { title: "Boxeo Técnico: Jab, Distancia y Juego de Pies", drills: "3×3' Cuerda · 3×3' Sombra con pivotes (45°-90°) · 4×3' Saco enfoque jab y 1-2.", rounds: 4, workSec: 180, restSec: 60, burstFast: 0, burstNorm: 0 },
+          { title: "Boxeo Potencia: Vía Fosfagénica en Saco", drills: "2×3' Sombra · 3×3' Saco con ráfagas máximas de 5\" cada 25\" · 2×3' Manoplas.", rounds: 3, workSec: 180, restSec: 60, burstFast: 5, burstNorm: 25 },
+          { title: "Boxeo Defensa: Esquivas, Bloqueos y Contragolpe", drills: "3×3' Sombra defensiva · 4×3' Defensa activa y respuesta · 2×3' Saco libre.", rounds: 4, workSec: 180, restSec: 60, burstFast: 0, burstNorm: 0 },
+          { title: "Boxeo Glucolítico: Ráfagas Sostenidas 20\"", drills: "2×3' Calentamiento técnico · 3×3' Saco ráfagas 20\" rápidas / 40\" ritmo medio · 2×3' Sombra suelta.", rounds: 3, workSec: 180, restSec: 60, burstFast: 20, burstNorm: 40 },
+          { title: "🥊 VIERNES DE SPARRING (4×3' Oficial)", drills: "3×3' Sombra táctica · 4×3' SPARRING técnico/libre aplicando el plan de pelea · 10' vuelta a la calma.", rounds: 4, workSec: 180, restSec: 60, burstFast: 0, burstNorm: 0, isSparring: true },
+          { title: "Saco de Velocidad y Coordinación", drills: "4×2' Saco de velocidad / pera loca · 2×3' Sombra suave y estiramiento.", rounds: 4, workSec: 120, restSec: 60, burstFast: 0, burstNorm: 0 },
+          null
         ];
-        return sessions[dayIdx] || sessions[0];
+
+        var selectedAmList = amPlans[freq] || amPlans["4"];
+        return {
+          dayName: DAY_FULL[dayIdx],
+          meso: meso,
+          am: selectedAmList[dayIdx] || null,
+          pm: pmPlans[dayIdx] || null
+        };
       }
 
       function renderCampamento() {
-        const totalDays = Math.max(7, DateUtils.diffDays(AppState.profile.startDate, AppState.profile.fightDate));
-        const totalWeeks = Math.max(1, Math.min(24, Math.ceil(totalDays / 7)));
-        if (AppState.selectedWeek >= totalWeeks) {
-          AppState.selectedWeek = totalWeeks - 1;
+        var meso = getActiveMesocycle();
+        var mTitle = document.getElementById("mesoTitle");
+        var mSub = document.getElementById("mesoSub");
+        if (mTitle) mTitle.textContent = "Mesociclo: " + meso.name;
+        if (mSub) mSub.textContent = meso.summary;
+
+        var freqSel = document.getElementById("campFreqSelect");
+        var phaseSel = document.getElementById("campPhaseSelect");
+        if (freqSel) freqSel.value = state.camp.freq;
+        if (phaseSel) phaseSel.value = state.camp.phase;
+
+        // Render 7 day pills
+        var pillsHost = document.getElementById("campDayPills");
+        if (pillsHost) {
+          var pillsHtml = "";
+          for (var i = 0; i < 7; i++) {
+            var plan = getCampDayPlan(i);
+            var isAct = state.camp.selectedDay === i;
+            var isSpar = i === 4;
+            var tag = isSpar ? "🥊Spar" : (plan.am && plan.pm ? "AM+PM" : (plan.am ? "AM" : (plan.pm ? "PM" : "Desc")));
+            pillsHtml += '<button type="button" class="day-pill' + (isAct ? ' active' : '') + (isSpar ? ' sparring-day' : '') + '" data-action="select-camp-day" data-day="' + i + '">' +
+              '<span>' + DAY_NAMES[i] + '</span>' +
+              '<span class="day-dot">' + tag + '</span>' +
+            '</button>';
+          }
+          pillsHost.innerHTML = pillsHtml;
         }
 
-        const meso = getMesocycleForWeek(AppState.selectedWeek, totalWeeks);
-        const daysLeft = Math.max(0, DateUtils.diffDays(todayIso, AppState.profile.fightDate));
+        // Render selected day block
+        var host = document.getElementById("campDayContent");
+        if (!host) return;
+        var dIdx = state.camp.selectedDay;
+        var dayPlan = getCampDayPlan(dIdx);
+        var html = '<div class="section-title" style="margin-top:4px;"><span>📅 ' + dayPlan.dayName + '</span></div>';
 
-        document.getElementById('campSummaryText').textContent =
-          totalWeeks + ' semanas de campamento · Faltan ' + daysLeft + ' días para la pelea (' + DateUtils.formatShort(AppState.profile.fightDate) + ')';
-        const mesoBadge = document.getElementById('mesocycleBadge');
-        mesoBadge.textContent = meso.name;
-        mesoBadge.className = 'badge ' + meso.badgeClass;
-
-        document.getElementById('gymSplitSelect').value = AppState.gymSplit;
-
-        // Render week pills
-        const weekStrip = document.getElementById('weekStrip');
-        let weekHtml = '';
-        for (let w = 0; w < totalWeeks; w++) {
-          const wStart = DateUtils.addDays(AppState.profile.startDate, w * 7);
-          const active = w === AppState.selectedWeek ? 'active' : '';
-          weekHtml += '<button type="button" class="week-pill ' + active + '" data-week="' + w + '">Sem ' + (w + 1) + ' (' + DateUtils.formatShort(wStart) + ')</button>';
-        }
-        weekStrip.innerHTML = weekHtml;
-
-        // Render day tabs
-        const dayTabs = document.getElementById('dayTabs');
-        dayTabs.innerHTML = DAY_NAMES.map((d, idx) => {
-          const active = idx === AppState.selectedDayIdx ? 'active' : '';
-          const sparClass = idx === 4 ? 'sparring-day' : '';
-          const label = idx === 4 ? 'Vie 🥊' : d.slice(0, 3);
-          return '<button type="button" class="day-tab ' + active + ' ' + sparClass + '" data-day="' + idx + '">' + label + '</button>';
-        }).join('');
-
-        // Render selected day dual session
-        const dayIdx = AppState.selectedDayIdx;
-        const dayDateIso = DateUtils.addDays(AppState.profile.startDate, AppState.selectedWeek * 7 + dayIdx);
-        const amGym = getGymSessionForDay(AppState.gymSplit, dayIdx, meso);
-        const pmBox = getBoxingSessionForDay(dayIdx, meso);
-
-        const amKey = 'am_' + AppState.selectedWeek + '_' + dayIdx;
-        const pmKey = 'pm_' + AppState.selectedWeek + '_' + dayIdx;
-        const amDone = Boolean(AppState.completedChecks[amKey]);
-        const pmDone = Boolean(AppState.completedChecks[pmKey]);
-
-        let amHtml = '';
-        if (amGym.restDay) {
-          amHtml = '<div class="session-block">' +
-            '<div class="card-header" style="margin-bottom:6px;">' +
-              '<span class="card-title">☀️ Turno AM · ' + escapeHtml(amGym.title) + '</span>' +
-              '<span class="badge badge-green">Recuperación</span>' +
-            '</div>' +
-            '<p class="muted">' + escapeHtml(amGym.note) + '</p>' +
+        if (!dayPlan.am && !dayPlan.pm) {
+          html += '<div class="session-block nutri-block">' +
+            '<div class="session-tag" style="color:#34d399;">🛌 Descanso Total y Supercompensación</div>' +
+            '<p style="font-size:0.82rem; margin:6px 0 0; color:#d1d5db;">Recuperación del sistema nervioso central, sueño 8–9 h, hidratación y movilidad suave.</p>' +
           '</div>';
-        } else {
-          const exListHtml = amGym.exercises.map((ex) =>
-            '<div class="exercise-item">' +
-              '<span>' + escapeHtml(ex.name) + '</span>' +
-              '<span class="load-tag">' + escapeHtml(ex.load) + '</span>' +
-            '</div>'
-          ).join('');
+          host.innerHTML = html;
+          return;
+        }
 
-          amHtml = '<div class="session-block">' +
-            '<div class="card-header" style="margin-bottom:6px;">' +
-              '<span class="card-title">☀️ Turno AM · ' + escapeHtml(amGym.title) + '</span>' +
-              '<span class="badge badge-sky">' + Math.round(meso.pct * 100) + '% RM</span>' +
-            '</div>' +
-            '<div class="muted" style="margin-bottom:8px;">Esquema: ' + escapeHtml(meso.scheme) + '</div>' +
-            exListHtml +
-            '<div class="transfer-alert"><strong>⚡ Transferencia obligatoria post-pesas:</strong> ' + escapeHtml(amGym.transfer) + '</div>' +
-            '<label class="check-row"><input type="checkbox" data-check-key="' + amKey + '" ' + (amDone ? 'checked' : '') + ' /> Marcar sesión AM completada</label>' +
+        // AM Block
+        if (dayPlan.am) {
+          html += '<div class="session-block am-block">' +
+            '<div class="session-header">' +
+              '<div>' +
+                '<div class="session-tag" style="color:#fbbf24;">☀️ Turno AM · Gimnasio de Pesas</div>' +
+                '<div style="font-weight:800; font-size:0.9rem;">' + dayPlan.am.title + '</div>' +
+                '<div style="font-size:0.74rem; color:#9ca3af;">Esquema: ' + dayPlan.meso.setsReps + ' · ' + dayPlan.meso.rest + ' · Calentamiento 10\'</div>' +
+              '</div>' +
+            '</div>';
+
+          for (var j = 0; j < dayPlan.am.exercises.length; j++) {
+            var ex = dayPlan.am.exercises[j];
+            var chkKey = state.camp.freq + "_" + dIdx + "_" + j;
+            var checked = !!state.camp.completed[chkKey];
+            html += '<label class="ex-item">' +
+              '<input type="checkbox" class="ex-check" data-ex-key="' + chkKey + '"' + (checked ? ' checked' : '') + ' />' +
+              '<div>' +
+                '<div class="ex-name' + (checked ? ' done' : '') + '">' + ex.name + '</div>' +
+                '<div class="ex-meta">' + ex.load + ' · ' + dayPlan.meso.setsReps + '</div>' +
+              '</div>' +
+            '</label>';
+          }
+
+          html += '<div class="transfer-callout">' +
+            '⚡ <b>Transferencia Obligatoria Post-Pesas:</b> Al terminar la última serie, realiza <b>45–60" de boxeo de sombra explosivo</b> (95–100% velocidad) para transferir la activación neural al golpe.' +
+          '</div></div>';
+        } else if (dIdx === 4) {
+          html += '<div class="session-block am-block">' +
+            '<div class="session-tag" style="color:#fbbf24;">☀️ Mañana Libre de Pesas</div>' +
+            '<div style="font-size:0.82rem; color:#d1d5db; margin-top:4px;">Sin carga de gimnasio para llegar con frescura neuromuscular al <b>Sparring de la tarde</b>.</div>' +
           '</div>';
         }
 
-        const pmHighlight = pmBox.isSparring ? 'sparring-highlight' : '';
-        const pmBadge = pmBox.isSparring
-          ? '<span class="badge badge-amber">🥊 VIERNES DE SPARRING</span>'
-          : '<span class="badge badge-red">' + pmBox.rounds + '×' + formatMMSS(pmBox.work) + '</span>';
+        // Nutrition between sessions
+        if (dayPlan.am && dayPlan.pm) {
+          var diffKg = (state.profile.weight - state.profile.targetWeight).toFixed(1);
+          var nutriNote = parseFloat(diffKg) > 0.5
+            ? 'Estás <b>' + diffKg + ' kg</b> sobre tu peso objetivo: prioriza carbohidratos complejos alrededor del entrenamiento, proteína magra y electrolitos sin recortes extremos.'
+            : 'Estás en rango de categoría: repón glucógeno muscular con carbohidratos + proteína de rápida asimilación y 500–750 ml de agua con sales.';
+          html += '<div class="session-block nutri-block">' +
+            '<div class="session-tag" style="color:#34d399;">🥗 Ventana Entre Turnos (Separación 5–6 horas)</div>' +
+            '<div style="font-size:0.8rem; color:#d1d5db; margin-top:4px;">' + nutriNote + '</div>' +
+          '</div>';
+        }
 
-        const pmHtml = '<div class="session-block ' + pmHighlight + '">' +
-          '<div class="card-header" style="margin-bottom:6px;">' +
-            '<span class="card-title">🌙 ' + escapeHtml(pmBox.title) + '</span>' +
-            pmBadge +
-          '</div>' +
-          '<p class="muted" style="margin-bottom:10px;">' + escapeHtml(pmBox.focus) + '</p>' +
-          '<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">' +
-            '<label class="check-row" style="margin:0;"><input type="checkbox" data-check-key="' + pmKey + '" ' + (pmDone ? 'checked' : '') + ' /> Sesión PM completada</label>' +
-            '<button type="button" class="btn btn-primary btn-sm btn-load-crono" ' +
-              'data-title="' + escapeHtml(pmBox.title) + '" ' +
-              'data-rounds="' + pmBox.rounds + '" ' +
-              'data-work="' + pmBox.work + '" ' +
-              'data-rest="' + pmBox.rest + '" ' +
-              'data-burst="' + pmBox.burst + '" ' +
-              'data-normal="' + pmBox.normal + '">▶ Crono</button>' +
-          '</div>' +
-        '</div>';
+        // PM Block
+        if (dayPlan.pm) {
+          html += '<div class="session-block pm-block">' +
+            '<div class="session-header">' +
+              '<div>' +
+                '<div class="session-tag" style="color:#f87171;">🌙 Turno PM · Boxeo Específico</div>' +
+                '<div style="font-weight:800; font-size:0.9rem;">' + dayPlan.pm.title + '</div>' +
+              '</div>' +
+              '<button type="button" class="btn-primary btn-sm" data-action="load-to-crono" ' +
+                'data-label="' + dayPlan.pm.title.replace(/"/g, "") + '" ' +
+                'data-rounds="' + dayPlan.pm.rounds + '" ' +
+                'data-work="' + dayPlan.pm.workSec + '" ' +
+                'data-rest="' + dayPlan.pm.restSec + '" ' +
+                'data-fast="' + dayPlan.pm.burstFast + '" ' +
+                'data-norm="' + dayPlan.pm.burstNorm + '">▶ Crono</button>' +
+            '</div>' +
+            '<div style="font-size:0.82rem; color:#e5e7eb;">' + dayPlan.pm.drills + '</div>' +
+          '</div>';
+        }
 
-        const nutHtml = '<div class="nutrition-box">' +
-          '<strong>🥗 Protocolo Doble Turno (Separación 5-6 h · ' + DAY_NAMES[dayIdx] + ' ' + DateUtils.formatShort(dayDateIso) + '):</strong> ' +
-          escapeHtml(meso.nutrition) +
-        '</div>';
-
-        document.getElementById('campDayContent').innerHTML = amHtml + nutHtml + pmHtml;
+        host.innerHTML = html;
       }
 
-      /* ================= 6. MERLO (2014) ENERGY PATHWAYS ================= */
-      const VIAS_DATA = [
+      // 8. Vías Energéticas (Merlo 2014)
+      var VIAS_DATA = [
         {
-          id: 'fosfagenico',
-          name: 'Sistema Fosfagénico (ATP-PC)',
-          badge: '0 - 15 seg · Explosividad',
-          badgeClass: 'badge-amber',
-          substrate: 'Fosfágenos / Creatina intramuscular',
-          goal: 'Desarrollar máxima frecuencia y potencia de golpeo acíclico sin acumular fatiga láctica prematura.',
+          id: "phosphagen",
+          name: "Sistema Fosfagénico (ATP-PCr)",
+          badge: "0–15s · Explosividad Máxima",
+          color: "#f59e0b",
+          desc: "Sostiene acciones explosivas y acíclicas a máxima frecuencia de golpeo sin acumulación temprana de lactato.",
           levels: {
-            1: { label: '6 ráfagas × 4" máxima velocidad / 26" ritmo suave (en 3 rounds de 3')', rounds: 3, work: 180, rest: 60, burst: 4, normal: 26 },
-            2: { label: '6 ráfagas × 5" máxima velocidad / 25" ritmo suave (en 4 rounds de 3')', rounds: 4, work: 180, rest: 60, burst: 5, normal: 25 },
-            3: { label: '9 ráfagas × 6" máxima velocidad / 14" ritmo suave (en 4 rounds de 3')', rounds: 4, work: 180, rest: 60, burst: 6, normal: 14 }
+            1: { rounds: 3, workSec: 180, restSec: 60, burstFast: 4, burstNorm: 26, spec: "Nivel 1: 3 rounds × 3' (ráfagas 4\" máximas / 26\" ritmo suave)" },
+            2: { rounds: 4, workSec: 180, restSec: 60, burstFast: 5, burstNorm: 25, spec: "Nivel 2: 4 rounds × 3' (ráfagas 5\" máximas / 25\" ritmo normal)" },
+            3: { rounds: 5, workSec: 180, restSec: 60, burstFast: 7, burstNorm: 18, spec: "Nivel 3: 5 rounds × 3' (ráfagas 7\" máximas / 18\" ritmo activo)" }
           }
         },
         {
-          id: 'glucolitico',
-          name: 'Sistema Glucolítico (Anaeróbico Láctico)',
-          badge: '15 seg - 2 min · Tolerancia Lactato',
-          badgeClass: 'badge-red',
-          substrate: 'Glucógeno muscular (lactato pico 9–14 mmol/L)',
-          goal: 'Sostener intercambios de alta intensidad y acelerar la remoción/tolerancia de ácido láctico.',
+          id: "glycolytic",
+          name: "Sistema Glucolítico (Anaeróbico Láctico)",
+          badge: "15s–2' · Tolerancia al Lactato",
+          color: "#ef4444",
+          desc: "Desarrolla la velocidad sostenida en intercambios prolongados y la capacidad de buffer frente al ácido láctico.",
           levels: {
-            1: { label: '3 ráfagas × 15" ritmo intenso / 45" ritmo técnico (en 3 rounds de 3')', rounds: 3, work: 180, rest: 60, burst: 15, normal: 45 },
-            2: { label: '3 ráfagas × 20" ritmo intenso / 40" ritmo técnico (en 4 rounds de 3')', rounds: 4, work: 180, rest: 60, burst: 20, normal: 40 },
-            3: { label: '2 ráfagas × 45" máxima intensidad / 45" recuperación activa (en 4 rounds de 3')', rounds: 4, work: 180, rest: 60, burst: 45, normal: 45 }
+            1: { rounds: 3, workSec: 180, restSec: 60, burstFast: 15, burstNorm: 45, spec: "Nivel 1: 3 rounds × 3' (3 bloques de 15\" rápidos / 45\" moderados)" },
+            2: { rounds: 4, workSec: 180, restSec: 60, burstFast: 20, burstNorm: 40, spec: "Nivel 2: 4 rounds × 3' (3 bloques de 20\" rápidos / 40\" moderados)" },
+            3: { rounds: 4, workSec: 180, restSec: 60, burstFast: 45, burstNorm: 45, spec: "Nivel 3: 4 rounds × 3' (2 bloques de 45\" alta intensidad / 45\" ritmo)" }
           }
         },
         {
-          id: 'aerobico',
-          name: 'Sistema Aeróbico / Oxidativo',
-          badge: '70–80% Energía en Combate · Recuperación',
-          badgeClass: 'badge-green',
-          substrate: 'Glucógeno y ácidos grasos (VO2máx / VAM)',
-          goal: 'Sostener el ritmo global de 3 a 12 asaltos y acelerar la recuperación entre rounds y ráfagas.',
+          id: "aerobic",
+          name: "Sistema Aeróbico / Oxidativo",
+          badge: "70–80% Energía Total · Recuperación",
+          color: "#10b981",
+          desc: "Aporta la base energética del combate y acelera la resíntesis de fosfocreatina entre ráfagas y en el minuto de descanso.",
           levels: {
-            1: { label: '4 rounds × 3:00 ritmo continuo fluido (65-75% FCmáx) / 1:00 descanso', rounds: 4, work: 180, rest: 60, burst: 0, normal: 0 },
-            2: { label: '6 rounds × 3:00 sombra y saco técnico continuo / 1:00 descanso', rounds: 6, work: 180, rest: 60, burst: 0, normal: 0 },
-            3: { label: '8 rounds × 3:00 ritmo competitivo constante / 1:00 descanso', rounds: 8, work: 180, rest: 60, burst: 0, normal: 0 }
+            1: { rounds: 4, workSec: 180, restSec: 60, burstFast: 0, burstNorm: 0, spec: "Nivel 1: 4 rounds × 3' continuo técnico (140–155 lpm)" },
+            2: { rounds: 6, workSec: 180, restSec: 60, burstFast: 0, burstNorm: 0, spec: "Nivel 2: 6 rounds × 3' ritmo constante y desplazamiento" },
+            3: { rounds: 8, workSec: 180, restSec: 45, burstFast: 0, burstNorm: 0, spec: "Nivel 3: 8 rounds × 3' con descansos reducidos de 45\"" }
           }
         }
       ];
 
       function renderVias() {
-        const lvl = AppState.viaLevel;
-        document.querySelectorAll('#viasLevelRow .filter-pill').forEach((btn) => {
-          btn.classList.toggle('active', Number(btn.dataset.vlevel) === lvl);
-        });
-
-        const container = document.getElementById('viasContainer');
-        container.innerHTML = VIAS_DATA.map((v) => {
-          const cfg = v.levels[lvl];
-          return '<div class="session-block">' +
-            '<div class="card-header" style="margin-bottom:6px;">' +
-              '<span class="card-title">' + escapeHtml(v.name) + '</span>' +
-              '<span class="badge ' + v.badgeClass + '">' + escapeHtml(v.badge) + '</span>' +
+        var lvl = state.viasLevel || 1;
+        var btns = document.querySelectorAll("#viasLevelRow .chip-btn");
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].classList.toggle("active", parseInt(btns[i].getAttribute("data-level"), 10) === lvl);
+        }
+        var host = document.getElementById("viasList");
+        if (!host) return;
+        var html = "";
+        for (var j = 0; j < VIAS_DATA.length; j++) {
+          var v = VIAS_DATA[j];
+          var cfg = v.levels[lvl];
+          html += '<div class="pathway-card">' +
+            '<div class="pathway-top">' +
+              '<div>' +
+                '<div style="font-weight:800; font-size:0.94rem;">' + v.name + '</div>' +
+                '<span class="pathway-badge" style="background:rgba(255,255,255,0.06); color:' + v.color + '; border:1px solid ' + v.color + ';">' + v.badge + '</span>' +
+              '</div>' +
+              '<button type="button" class="btn-primary btn-sm" data-action="load-to-crono" ' +
+                'data-label="' + v.name.replace(/"/g, "") + '" ' +
+                'data-rounds="' + cfg.rounds + '" ' +
+                'data-work="' + cfg.workSec + '" ' +
+                'data-rest="' + cfg.restSec + '" ' +
+                'data-fast="' + cfg.burstFast + '" ' +
+                'data-norm="' + cfg.burstNorm + '">▶ Crono</button>' +
             '</div>' +
-            '<div class="muted" style="margin-bottom:4px;"><strong>Sustrato:</strong> ' + escapeHtml(v.substrate) + '</div>' +
-            '<div class="muted" style="margin-bottom:8px;"><strong>Objetivo:</strong> ' + escapeHtml(v.goal) + '</div>' +
-            '<div style="background:var(--bg-card); border:1px solid var(--border); border-radius:9px; padding:9px; margin-bottom:8px; font-size:0.82rem;">' +
-              '<strong>Protocolo Nivel ' + lvl + ':</strong> ' + escapeHtml(cfg.label) +
-            '</div>' +
-            '<button type="button" class="btn btn-primary btn-sm btn-load-crono" ' +
-              'data-title="' + escapeHtml(v.name + ' (Nivel ' + lvl + ')') + '" ' +
-              'data-rounds="' + cfg.rounds + '" ' +
-              'data-work="' + cfg.work + '" ' +
-              'data-rest="' + cfg.rest + '" ' +
-              'data-burst="' + cfg.burst + '" ' +
-              'data-normal="' + cfg.normal + '">▶ Ejecutar en Crono</button>' +
+            '<p style="font-size:0.8rem; color:#d1d5db; margin:6px 0;">' + v.desc + '</p>' +
+            '<div style="font-size:0.78rem; font-weight:700; color:#fcd34d;">📋 ' + cfg.spec + '</div>' +
           '</div>';
-        }).join('');
+        }
+        host.innerHTML = html;
       }
 
-      /* ================= 7. TECHNICAL & PHYSICAL CATALOG ================= */
-      const CATALOG_ITEMS = [
-        { cat: 'jabs', title: 'Jab Clásico de Control (1)', tag: 'Golpe Recto', desc: 'Extensión explosiva del brazo adelantado girando el puño al final, hombro cubriendo el mentón y exhalación corta.' },
-        { cat: 'jabs', title: 'Doble Jab con Paso Adelante (1-1)', tag: 'Entrada', desc: 'Primer jab para medir distancia y bloquear visión; segundo jab penetrante sincronizado con deslizamiento del pie delantero.' },
-        { cat: 'jabs', title: 'Jab al Cuerpo (Cambio de Nivel)', tag: 'Ataque Bajo', desc: 'Flexión de rodillas bajando el centro de gravedad (sin inclinar la espalda) para impactar al plexo y abrir la guardia alta.' },
-        { cat: 'jabs', title: 'Directo de Mano Atrasada (2)', tag: 'Potencia', desc: 'Nace en el empuje del metatarso trasero, rotación de cadera y hombro, transfiriendo toda la cadena cinética al puño.' },
-        { cat: 'jabs', title: 'Gancho Izquierdo al Hígado (3 cuerpo)', tag: 'Media Distancia', desc: 'Codo flexionado a 90°, rotación explosiva de tronco y transferencia de peso hacia la pierna adelantada.' },
-        { cat: 'pies', title: 'Postura de Guardia y Balance', tag: 'Fundamento', desc: 'Pies al ancho de hombros, rodillas semiflexionadas, peso repartido 50/50, codos pegados a costillas y mentón protegido.' },
-        { cat: 'pies', title: 'Pivote Corto (45°–90°) y Largo (90°–180°)', tag: 'Ángulos', desc: 'Giro sobre la bola del pie delantero barriendo el pie trasero para salir de la línea de ataque y quedar en ángulo dominante.' },
-        { cat: 'pies', title: 'Desplazamiento por Arrastre', tag: 'Juego de Pies', desc: 'Mover primero el pie más cercano a la dirección deseada sin cruzar nunca las piernas para conservar base de golpeo.' },
-        { cat: 'fuerza', title: 'Sentadilla + Salto Pliométrico', tag: 'Tren Inferior', desc: 'Desarrolla la fuerza base del tren inferior y la reactividad elástica desde donde nace todo golpe.' },
-        { cat: 'fuerza', title: 'Press Banca & Press Hombro Explosivo', tag: 'Empuje', desc: 'Potencia en golpes rectos y resistencia local del deltoides para sostener la guardia alta durante todos los rounds.' },
-        { cat: 'fuerza', title: 'Remo Gironda y Dominadas Supinas', tag: 'Tirón', desc: 'Fortalece la tracción escapular, acelera el retorno del brazo a la guardia y potencia ganchos y uppercuts.' },
-        { cat: 'fuerza', title: 'Compensatorio de Cadera (30% RM)', tag: 'Prevención', desc: 'Abducción, aducción y extensión de cadera en polea (3×12-15 reps) para estabilidad en pivotes y desplazamientos.' },
-        { cat: 'core', title: 'Giros Rusos con Disco / Balón Medicinal', tag: 'Core Rotacional', desc: 'Potencia la rotación del complejo lumbopélvico y la transferencia de fuerza entre tren inferior y superior.' },
-        { cat: 'core', title: 'Elevaciones en "V" y Abdomen Colgado', tag: 'Core Explosivo', desc: 'Entrena el doble pico de activación abdominal requerido al lanzar combinaciones rápidas.' },
-        { cat: 'core', title: 'Compensatorio de Cuello (30% RM)', tag: 'Protección', desc: 'Flexión, extensión y flexiones laterales (3×15 reps, 5" entre ejercicios) para absorber impactos y prevenir lesiones cervicales.' }
+      // 9. Catálogo Técnico, Variantes de Jab y Físico
+      var CATALOG_ITEMS = [
+        { cat: "jab", catLabel: "Variante de Jab", title: "1. Jab Estándar (Rápido / Snap)", desc: "Golpe recto con mano adelantada desde la guardia, rotación de antebrazo al final y regreso inmediato al mentón.", cue: "Exhala corto al impacto; hombro delantero cubre la mandíbula." },
+        { cat: "jab", catLabel: "Variante de Jab", title: "2. Jab con Paso Adelante (Step-In Jab)", desc: "Sincroniza el impulso del pie trasero y aterrizaje del pie delantero justo cuando el puño alcanza el objetivo.", cue: "No cruces los pies; mantén la base equilibrada tras impactar." },
+        { cat: "jab", catLabel: "Variante de Jab", title: "3. Jab al Cuerpo (Body Jab)", desc: "Flexión rápida de rodillas bajando el centro de gravedad para impactar al plexo solar sin inclinar la espalda.", cue: "Baja con las piernas, nunca agachando solo la cabeza." },
+        { cat: "jab", catLabel: "Variante de Jab", title: "4. Doble y Triple Jab", desc: "Lanzamiento encadenado con pequeños pasos de ajuste para romper el ritmo defensivo y preparar el directo trasero.", cue: "Varía cadencia y altura (cabeza-cuerpo-cabeza)." },
+        { cat: "jab", catLabel: "Variante de Jab", title: "5. Jab de Medida / Control", desc: "Extensión táctica para bloquear la línea visual del oponente, medir distancia y frenar su avance.", cue: "Úsalo como radar antes de descargar combinaciones de poder." },
+        { cat: "jab", catLabel: "Variante de Jab", title: "6. Up-Jab (Jab Ascendente)", desc: "Trayectoria ligeramente diagonal de abajo hacia arriba para penetrar guardias cerradas frontales.", cue: "Ideal contra rivales que bloquean con antebrazos juntos." },
+        { cat: "golpes", catLabel: "Golpes y Combos", title: "Directo Trasero (2) — Cadena Cinética", desc: "La potencia nace en el empuje del pie trasero, rotación de cadera, transferencia por el core y extensión del hombro.", cue: "Pies → Cadera → Core → Hombro → Puño en una sola secuencia." },
+        { cat: "golpes", catLabel: "Golpes y Combos", title: "Hook Izquierdo (3) Cabeza / Hígado", desc: "Giro explosivo de cadera y talón delantero con codo a 90° paralelo al suelo.", cue: "Mantén la mano derecha pegada al pómulo durante el giro." },
+        { cat: "golpes", catLabel: "Golpes y Combos", title: "Uppercut (5 y 6)", desc: "Golpe ascendente corto impulsado por extensión de piernas y rotación de tronco en media-corta distancia.", cue: "No bajes excesivamente la mano antes de subir el golpe." },
+        { cat: "pies", catLabel: "Defensa y Pies", title: "Pivote Corto (45°–90°) y Largo (90°–180°)", desc: "Giro sobre el metatarso delantero desplazando el pie trasero en arco para salir de las cuerdas o crear ángulo.", cue: "Evita quedar cuadrado frente al oponente tras atacar." },
+        { cat: "pies", catLabel: "Defensa y Pies", title: "Desplazamiento por Arrastre (Step & Slide)", desc: "Mueve primero el pie más cercano a la dirección deseada y desliza el otro manteniendo siempre el ancho de guardia.", cue: "Nunca juntes los pies ni saltes en el aire." },
+        { cat: "fuerza", catLabel: "Fuerza y Core", title: "Fuerza Máxima Neural (90–100% RM · 1–3 rep)", desc: "Mejora reclutamiento de unidades motoras y sincronización intermuscular sin hipertrofia ni aumento de peso.", cue: "Solo para intermedios/avanzados con 3–5' de recuperación completa." },
+        { cat: "fuerza", catLabel: "Fuerza y Core", title: "Core 4 Pilares (Doble Pico de Activación)", desc: "Combina fuerza (colgado en barra), explosividad (V-ups con disco), resistencia (giros) y estabilidad (plancha).", cue: "El core conecta la fuerza de piernas con la velocidad del puño." },
+        { cat: "implementos", catLabel: "Implementos", title: "Saco Pesado y Saco de Velocidad", desc: "El saco pesado desarrolla potencia específica y distancia; el saco de velocidad mejora coordinación óculo-manual y resistencia de hombros.", cue: "Termina cada bloque con 45–60\" de sombra explosiva." },
+        { cat: "implementos", catLabel: "Implementos", title: "Cuerda de Saltar y Bandas Elásticas", desc: "La cuerda perfecciona el rebote de tobillo y ritmo; las bandas añaden resistencia acomodada en la fase final del golpe.", cue: "Mantén codos pegados y muñecas sueltas al saltar cuerda." }
       ];
 
-      let activeCatalogCat = 'all';
       function renderCatalog() {
-        const q = (document.getElementById('catalogSearch').value || '').trim().toLowerCase();
-        const filtered = CATALOG_ITEMS.filter((item) => {
-          const matchCat = activeCatalogCat === 'all' || item.cat === activeCatalogCat;
-          const matchQ = !q || item.title.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q) || item.tag.toLowerCase().includes(q);
-          return matchCat && matchQ;
+        var filter = state.catalogFilter || "all";
+        var query = (state.catalogQuery || "").toLowerCase().trim();
+
+        var chips = document.querySelectorAll("#catalogFilterRow .chip-btn");
+        for (var i = 0; i < chips.length; i++) {
+          chips[i].classList.toggle("active", chips[i].getAttribute("data-cat") === filter);
+        }
+
+        var host = document.getElementById("catalogGrid");
+        if (!host) return;
+
+        var filtered = CATALOG_ITEMS.filter(function (item) {
+          var matchCat = filter === "all" || item.cat === filter;
+          var matchText = !query ||
+            item.title.toLowerCase().indexOf(query) !== -1 ||
+            item.desc.toLowerCase().indexOf(query) !== -1 ||
+            item.cue.toLowerCase().indexOf(query) !== -1;
+          return matchCat && matchText;
         });
 
-        const container = document.getElementById('catalogContainer');
-        if (!filtered.length) {
-          container.innerHTML = '<p class="muted">No se encontraron ejercicios con ese filtro.</p>';
+        if (filtered.length === 0) {
+          host.innerHTML = '<div style="color:var(--muted); font-size:0.84rem; padding:12px;">No se encontraron ejercicios con ese filtro.</div>';
           return;
         }
-        container.innerHTML = filtered.map((item) =>
-          '<div class="session-block">' +
-            '<div class="card-header" style="margin-bottom:4px;">' +
-              '<span class="card-title">' + escapeHtml(item.title) + '</span>' +
-              '<span class="badge badge-sky">' + escapeHtml(item.tag) + '</span>' +
-            '</div>' +
-            '<p class="muted">' + escapeHtml(item.desc) + '</p>' +
-          '</div>'
-        ).join('');
+
+        var html = "";
+        for (var j = 0; j < filtered.length; j++) {
+          var it = filtered[j];
+          html += '<div class="cat-item">' +
+            '<div class="cat-cat">' + it.catLabel + '</div>' +
+            '<div class="cat-title">' + it.title + '</div>' +
+            '<div class="cat-desc">' + it.desc + '</div>' +
+            '<div class="cat-cue">💡 ' + it.cue + '</div>' +
+          '</div>';
+        }
+        host.innerHTML = html;
       }
 
-      /* ================= 8. NAVIGATION & EVENT WIRING ================= */
+      // 10. Profile & Header Synchronization
+      function renderProfileUI() {
+        var drawer = document.getElementById("profileDrawer");
+        var toggleBtn = document.getElementById("btnToggleProfile");
+        if (drawer) drawer.classList.toggle("open", !!state.profileOpen);
+        if (toggleBtn) toggleBtn.classList.toggle("active", !!state.profileOpen);
+
+        var p = state.profile;
+        var map = {
+          profName: p.name,
+          profLevel: p.level,
+          profStyle: p.style,
+          profHeight: p.height,
+          profWeight: p.weight,
+          profTargetWeight: p.targetWeight,
+          profCampStart: p.campStart,
+          profFightDate: p.fightDate,
+          rmBench: state.rm.bench,
+          rmShoulder: state.rm.shoulder,
+          rmSquat: state.rm.squat,
+          rmRow: state.rm.row,
+          rmHamstring: state.rm.hamstring
+        };
+        for (var id in map) {
+          var el = document.getElementById(id);
+          if (el && document.activeElement !== el) {
+            el.value = map[id];
+          }
+        }
+
+        // Countdown & summary
+        var now = new Date();
+        now.setHours(12, 0, 0, 0);
+        var fight = parseLocalDate(p.fightDate);
+        var daysLeft = Math.round((fight.getTime() - now.getTime()) / 86400000);
+        var badge = document.getElementById("daysToFightBadge");
+        if (badge) {
+          badge.textContent = daysLeft >= 0 ? ("🥊 Faltan " + daysLeft + " días para pelea") : "🥊 Modo Mantenimiento";
+        }
+
+        var sub = document.getElementById("headerSubtitle");
+        if (sub) {
+          sub.textContent = (p.name || "Boxeador") + " · " + (p.level === "pro" ? "Pro" : "Amateur");
+        }
+
+        var diff = (p.weight - p.targetWeight).toFixed(1);
+        var dumbRec = Math.max(1, Math.round(p.weight * 0.05));
+        var bar = document.getElementById("profileSummaryBar");
+        if (bar) {
+          bar.innerHTML =
+            '<span>⚖️ Diferencia peso: <b>' + (parseFloat(diff) > 0 ? "+" + diff + " kg a bajar" : "En categoría (" + diff + " kg)") + '</b></span>' +
+            '<span>🏋️ Mancuerna sombra recomendada: <b>' + dumbRec + ' kg</b></span>';
+        }
+
+        var soundBtn = document.getElementById("btnToggleSound");
+        if (soundBtn) {
+          soundBtn.textContent = state.soundEnabled ? "🔊 Audio" : "🔇 Silencio";
+          soundBtn.classList.toggle("active", state.soundEnabled);
+        }
+      }
+
+      // 11. Tab Switching & Toast
       function switchTab(tabName) {
-        document.querySelectorAll('.tab-panel').forEach((el) => el.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach((btn) => {
-          btn.classList.toggle('active', btn.dataset.tab === tabName);
-        });
-        const target = document.getElementById('tab-' + tabName);
-        if (target) target.classList.add('active');
-      }
-
-      function syncProfileInputs() {
-        const p = AppState.profile;
-        document.getElementById('profName').value = p.name;
-        document.getElementById('profLevel').value = p.level;
-        document.getElementById('profStance').value = p.stance;
-        document.getElementById('profStyle').value = p.style;
-        document.getElementById('profStart').value = p.startDate;
-        document.getElementById('profFight').value = p.fightDate;
-        document.getElementById('rmBench').value = p.rmBench;
-        document.getElementById('rmShoulder').value = p.rmShoulder;
-        document.getElementById('rmSquat').value = p.rmSquat;
-        document.getElementById('rmRow').value = p.rmRow;
-        document.getElementById('rmHamstring').value = p.rmHamstring;
-        document.getElementById('headerSub').textContent = p.name + ' · ' + p.level + ' (' + p.stance + ')';
-      }
-
-      function saveProfileFromInputs() {
-        const p = AppState.profile;
-        p.name = (document.getElementById('profName').value || 'Boxeador').trim();
-        p.level = document.getElementById('profLevel').value;
-        p.stance = document.getElementById('profStance').value;
-        p.style = document.getElementById('profStyle').value;
-        p.startDate = document.getElementById('profStart').value || todayIso;
-        p.fightDate = document.getElementById('profFight').value || DateUtils.addDays(p.startDate, 28);
-        if (DateUtils.diffDays(p.startDate, p.fightDate) < 7) {
-          p.fightDate = DateUtils.addDays(p.startDate, 28);
-        }
-        p.rmBench = sanitizeNumber(document.getElementById('rmBench').value, 80, 10, 300);
-        p.rmShoulder = sanitizeNumber(document.getElementById('rmShoulder').value, 55, 5, 200);
-        p.rmSquat = sanitizeNumber(document.getElementById('rmSquat').value, 110, 10, 400);
-        p.rmRow = sanitizeNumber(document.getElementById('rmRow').value, 75, 10, 250);
-        p.rmHamstring = sanitizeNumber(document.getElementById('rmHamstring').value, 60, 5, 200);
-
+        state.activeTab = tabName;
         saveState();
-        syncProfileInputs();
-        pickNewCombo();
-        renderCampamento();
-      }
 
-      function updateOfflineIndicator() {
-        const textEl = document.getElementById('offlineText');
-        if (!navigator.onLine) {
-          textEl.textContent = 'Modo Offline Activo';
-        } else {
-          textEl.textContent = 'PWA Lista · Offline OK';
+        var panels = document.querySelectorAll(".tab-panel");
+        for (var i = 0; i < panels.length; i++) {
+          panels[i].classList.toggle("active", panels[i].id === "panel-" + tabName);
+        }
+
+        var navBtns = document.querySelectorAll(".nav-btn");
+        for (var j = 0; j < navBtns.length; j++) {
+          navBtns[j].classList.toggle("active", navBtns[j].getAttribute("data-tab") === tabName);
         }
       }
 
-      document.addEventListener('DOMContentLoaded', () => {
-        syncProfileInputs();
-        renderPresetChips();
-        loadTimerConfig({
-          title: TIMER_PRESETS[0].name,
-          rounds: TIMER_PRESETS[0].rounds,
-          work: TIMER_PRESETS[0].work,
-          rest: TIMER_PRESETS[0].rest,
-          burst: TIMER_PRESETS[0].burst,
-          normal: TIMER_PRESETS[0].normal
-        });
-        pickNewCombo();
+      var toastTimeout = null;
+      function showToast(msg) {
+        var el = document.getElementById("toastMsg");
+        if (!el) return;
+        el.textContent = msg;
+        el.classList.add("show");
+        if (toastTimeout) clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(function () {
+          el.classList.remove("show");
+        }, 2400);
+      }
+
+      // 12. PWA Install Prompt
+      var deferredInstallPrompt = null;
+      window.addEventListener("beforeinstallprompt", function (e) {
+        e.preventDefault();
+        deferredInstallPrompt = e;
+      });
+
+      function triggerInstall() {
+        if (deferredInstallPrompt) {
+          deferredInstallPrompt.prompt();
+          deferredInstallPrompt.userChoice.then(function () {
+            deferredInstallPrompt = null;
+          });
+        } else {
+          var modal = document.getElementById("installModal");
+          if (modal) modal.classList.add("open");
+        }
+      }
+
+      // 13. Unified Event Delegation (100% Immune to Inline Quote/Scope Bugs)
+      document.addEventListener("click", function (e) {
+        var target = e.target.closest("[data-action]");
+        if (!target) return;
+        var action = target.getAttribute("data-action");
+
+        if (action === "switch-tab") {
+          switchTab(target.getAttribute("data-tab"));
+        } else if (action === "toggle-profile") {
+          state.profileOpen = !state.profileOpen;
+          saveState();
+          renderProfileUI();
+        } else if (action === "reset-profile") {
+          state.profile = JSON.parse(JSON.stringify(DEFAULT_STATE.profile));
+          state.rm = JSON.parse(JSON.stringify(DEFAULT_STATE.rm));
+          saveState();
+          renderProfileUI();
+          renderCampamento();
+          renderCombo();
+          showToast("Perfil y 1RM restablecidos");
+        } else if (action === "toggle-sound") {
+          state.soundEnabled = !state.soundEnabled;
+          if (state.soundEnabled) soundEngine.playBurstBeep(true);
+          saveState();
+          renderProfileUI();
+          showToast(state.soundEnabled ? "🔊 Sonido activado" : "🔇 Modo silencioso");
+        } else if (action === "install-app") {
+          triggerInstall();
+        } else if (action === "close-install-modal") {
+          var modal = document.getElementById("installModal");
+          if (modal) modal.classList.remove("open");
+        } else if (action === "select-preset") {
+          var pKey = target.getAttribute("data-preset");
+          if (pKey === "custom") {
+            readCustomInputsAndApply();
+          } else if (PRESETS[pKey]) {
+            applyTimerConfig(PRESETS[pKey], pKey);
+          }
+        } else if (action === "timer-toggle") {
+          if (timer.running) pauseTimer();
+          else startTimer();
+        } else if (action === "timer-skip") {
+          soundEngine.ensureContext();
+          advancePhase(timer.running);
+        } else if (action === "timer-reset") {
+          applyTimerConfig({
+            label: timer.label,
+            rounds: timer.totalRounds,
+            workSec: timer.workSec,
+            restSec: timer.restSec,
+            burstFast: timer.burstFast,
+            burstNorm: timer.burstNorm
+          }, timer.presetKey);
+          showToast("Cronómetro reiniciado");
+        } else if (action === "test-bell") {
+          soundEngine.playBell();
+          showToast("🔔 Campana probada");
+        } else if (action === "next-combo") {
+          nextCombo();
+        } else if (action === "toggle-auto-combo") {
+          state.autoCombo = !state.autoCombo;
+          syncAutoComboTimer();
+          renderCombo();
+        } else if (action === "select-camp-day") {
+          state.camp.selectedDay = parseInt(target.getAttribute("data-day"), 10) || 0;
+          saveState();
+          renderCampamento();
+        } else if (action === "load-to-crono") {
+          var cfg = {
+            label: target.getAttribute("data-label") || "SESIÓN CARGADA",
+            rounds: parseInt(target.getAttribute("data-rounds"), 10) || 3,
+            workSec: parseInt(target.getAttribute("data-work"), 10) || 180,
+            restSec: parseInt(target.getAttribute("data-rest"), 10) || 60,
+            burstFast: parseInt(target.getAttribute("data-fast"), 10) || 0,
+            burstNorm: parseInt(target.getAttribute("data-norm"), 10) || 0
+          };
+          applyTimerConfig(cfg, "custom");
+          switchTab("crono");
+          showToast("⏱️ Sesión cargada en Crono");
+        } else if (action === "select-vias-level") {
+          state.viasLevel = parseInt(target.getAttribute("data-level"), 10) || 1;
+          saveState();
+          renderVias();
+        } else if (action === "filter-catalog") {
+          state.catalogFilter = target.getAttribute("data-cat") || "all";
+          saveState();
+          renderCatalog();
+        }
+      });
+
+      function readCustomInputsAndApply() {
+        var r = sanitizeNum(document.getElementById("custRounds").value, 3, 1, 15);
+        var wm = sanitizeNum(document.getElementById("custWorkMin").value, 3, 0, 15);
+        var ws = sanitizeNum(document.getElementById("custWorkSec").value, 0, 0, 59);
+        var rs = sanitizeNum(document.getElementById("custRestSec").value, 60, 5, 300);
+        var bf = sanitizeNum(document.getElementById("custBurstFast").value, 0, 0, 120);
+        var bn = sanitizeNum(document.getElementById("custBurstNorm").value, 0, 0, 180);
+        var totalWork = Math.max(5, wm * 60 + ws);
+        applyTimerConfig({
+          label: "PERSONALIZADO",
+          rounds: r,
+          workSec: totalWork,
+          restSec: rs,
+          burstFast: bf,
+          burstNorm: bn
+        }, "custom");
+      }
+
+      function handleFormUpdate(e) {
+        var el = e.target;
+        if (!el) return;
+
+        if (el.hasAttribute("data-profile-key")) {
+          var key = el.getAttribute("data-profile-key");
+          if (key === "height") state.profile.height = sanitizeNum(el.value, 175, 130, 220);
+          else if (key === "weight") state.profile.weight = sanitizeNum(el.value, 70, 40, 150);
+          else if (key === "targetWeight") state.profile.targetWeight = sanitizeNum(el.value, 69, 40, 150);
+          else state.profile[key] = el.value;
+          saveState();
+          renderProfileUI();
+          renderCampamento();
+          renderCombo();
+        } else if (el.hasAttribute("data-rm-key")) {
+          var rmKey = el.getAttribute("data-rm-key");
+          state.rm[rmKey] = sanitizeNum(el.value, 50, 5, 350);
+          saveState();
+          renderCampamento();
+        } else if (el.hasAttribute("data-custom-timer")) {
+          readCustomInputsAndApply();
+        } else if (el.hasAttribute("data-camp-control")) {
+          var ctrl = el.getAttribute("data-camp-control");
+          state.camp[ctrl] = el.value;
+          saveState();
+          renderCampamento();
+        } else if (el.hasAttribute("data-ex-key")) {
+          var exKey = el.getAttribute("data-ex-key");
+          state.camp.completed[exKey] = !!el.checked;
+          saveState();
+          renderCampamento();
+        } else if (el.hasAttribute("data-catalog-search")) {
+          state.catalogQuery = el.value;
+          renderCatalog();
+        }
+      }
+
+      document.addEventListener("input", handleFormUpdate);
+      document.addEventListener("change", handleFormUpdate);
+
+      // Visibility & Online/Offline Listeners
+      document.addEventListener("visibilitychange", function () {
+        if (!document.hidden && timer.running) {
+          tickTimer();
+          requestWakeLock();
+        }
+      });
+
+      function updateOnlineStatus() {
+        var badge = document.getElementById("netBadge");
+        if (!badge) return;
+        if (navigator.onLine) {
+          badge.className = "badge online";
+          badge.textContent = "🟢 Online";
+        } else {
+          badge.className = "badge offline";
+          badge.textContent = "🟡 Modo Offline Activo";
+        }
+      }
+
+      window.addEventListener("online", updateOnlineStatus);
+      window.addEventListener("offline", updateOnlineStatus);
+
+      // 14. App Bootstrap
+      function initApp() {
+        renderProfileUI();
+        applyTimerConfig(PRESETS.amateur, "amateur");
+        renderCombo();
         renderCampamento();
         renderVias();
         renderCatalog();
-        updateOfflineIndicator();
+        switchTab(state.activeTab || "crono");
+        updateOnlineStatus();
 
-        window.addEventListener('online', updateOfflineIndicator);
-        window.addEventListener('offline', updateOfflineIndicator);
-
-        // Bottom nav
-        document.querySelectorAll('.nav-btn').forEach((btn) => {
-          btn.addEventListener('click', () => switchTab(btn.dataset.tab));
-        });
-
-        // Profile drawer toggle & save
-        const drawer = document.getElementById('profileDrawer');
-        const toggleBtn = document.getElementById('btnToggleProfile');
-        toggleBtn.addEventListener('click', () => {
-          drawer.classList.toggle('open');
-          toggleBtn.classList.toggle('active', drawer.classList.contains('open'));
-        });
-        document.getElementById('btnSaveProfile').addEventListener('click', () => {
-          saveProfileFromInputs();
-          drawer.classList.remove('open');
-          toggleBtn.classList.remove('active');
-        });
-
-        // Timer preset selection
-        document.getElementById('presetGrid').addEventListener('click', (e) => {
-          const btn = e.target.closest('.preset-chip');
-          if (!btn) return;
-          const pid = btn.dataset.preset;
-          TimerState.presetId = pid;
-          renderPresetChips();
-          const customBox = document.getElementById('customTimerBox');
-          if (pid === 'custom') {
-            customBox.style.display = 'block';
-          } else {
-            customBox.style.display = 'none';
-            const found = TIMER_PRESETS.find((x) => x.id === pid);
-            if (found) {
-              loadTimerConfig({
-                title: found.name,
-                rounds: found.rounds,
-                work: found.work,
-                rest: found.rest,
-                burst: found.burst,
-                normal: found.normal
-              });
-            }
-          }
-        });
-
-        document.getElementById('btnApplyCustom').addEventListener('click', () => {
-          loadTimerConfig({
-            title: 'Personalizado',
-            rounds: document.getElementById('custRounds').value,
-            work: document.getElementById('custWork').value,
-            rest: document.getElementById('custRest').value,
-            burst: document.getElementById('custBurst').value,
-            normal: document.getElementById('custNormal').value
-          });
-        });
-
-        document.getElementById('btnTimerStart').addEventListener('click', startTimer);
-        document.getElementById('btnTimerPause').addEventListener('click', pauseTimer);
-        document.getElementById('btnTimerReset').addEventListener('click', resetTimer);
-        document.getElementById('btnTestBell').addEventListener('click', () => BoxingSoundEngine.playBell());
-        document.getElementById('btnNextCombo').addEventListener('click', pickNewCombo);
-
-        document.getElementById('btnMuteToggle').addEventListener('click', (e) => {
-          BoxingSoundEngine.muted = !BoxingSoundEngine.muted;
-          e.target.textContent = BoxingSoundEngine.muted ? '🔇 Silencio' : '🔊 Audio ON';
-        });
-
-        // Campamento controls
-        document.getElementById('gymSplitSelect').addEventListener('change', (e) => {
-          AppState.gymSplit = e.target.value;
-          saveState();
-          renderCampamento();
-        });
-
-        document.getElementById('weekStrip').addEventListener('click', (e) => {
-          const btn = e.target.closest('.week-pill');
-          if (!btn) return;
-          AppState.selectedWeek = sanitizeNumber(btn.dataset.week, 0, 0, 52);
-          saveState();
-          renderCampamento();
-        });
-
-        document.getElementById('dayTabs').addEventListener('click', (e) => {
-          const btn = e.target.closest('.day-tab');
-          if (!btn) return;
-          AppState.selectedDayIdx = sanitizeNumber(btn.dataset.day, 0, 0, 5);
-          saveState();
-          renderCampamento();
-        });
-
-        // Delegated checkbox & "▶ Crono" loader (safe against apostrophes in titles!)
-        document.body.addEventListener('change', (e) => {
-          if (e.target && e.target.dataset && e.target.dataset.checkKey) {
-            AppState.completedChecks[e.target.dataset.checkKey] = e.target.checked;
-            saveState();
-          }
-        });
-
-        document.body.addEventListener('click', (e) => {
-          const loadBtn = e.target.closest('.btn-load-crono');
-          if (!loadBtn) return;
-          TimerState.presetId = 'custom';
-          renderPresetChips();
-          document.getElementById('customTimerBox').style.display = 'none';
-          loadTimerConfig({
-            title: loadBtn.dataset.title || 'Sesión Cargada',
-            rounds: loadBtn.dataset.rounds,
-            work: loadBtn.dataset.work,
-            rest: loadBtn.dataset.rest,
-            burst: loadBtn.dataset.burst,
-            normal: loadBtn.dataset.normal
-          });
-          switchTab('crono');
-        });
-
-        // Vías level selector
-        document.getElementById('viasLevelRow').addEventListener('click', (e) => {
-          const btn = e.target.closest('.filter-pill');
-          if (!btn) return;
-          AppState.viaLevel = sanitizeNumber(btn.dataset.vlevel, 1, 1, 3);
-          saveState();
-          renderVias();
-        });
-
-        // Catalog filter & search
-        document.getElementById('catalogFilterRow').addEventListener('click', (e) => {
-          const btn = e.target.closest('.filter-pill');
-          if (!btn) return;
-          activeCatalogCat = btn.dataset.cat;
-          document.querySelectorAll('#catalogFilterRow .filter-pill').forEach((b) => {
-            b.classList.toggle('active', b.dataset.cat === activeCatalogCat);
-          });
-          renderCatalog();
-        });
-        document.getElementById('catalogSearch').addEventListener('input', renderCatalog);
-
-        // Register Service Worker
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('./sw.js').catch(() => {});
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("./sw.js", { scope: "./" }).catch(function () {});
         }
-      });
+      }
+
+      window.BoxCoach = {
+        state: state,
+        timer: timer,
+        switchTab: switchTab,
+        startTimer: startTimer,
+        pauseTimer: pauseTimer
+      };
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initApp);
+      } else {
+        initApp();
+      }
     })();
   </script>
 </body>
